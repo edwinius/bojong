@@ -23,6 +23,9 @@ export default class Banner extends React.Component {
 const styles = StyleSheet.create({
     banner: {
         backgroundColor: 'rgb(0, 61, 153)',
+        height: 50,
+        flex: 1,
+        width: 50,
 
         ...Platform.select({
 			android: {

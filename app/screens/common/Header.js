@@ -22,19 +22,21 @@ const Header = ({ navigation, title }) => (
             zIndex: 4,
         }}
 	>
-		<TouchableOpacity
-            onPress={ () => navigation.goBack(null) }
-            style={ styles.topSegment }
-        >
-            <Text
-                style={{
-                    fontWeight: 'bold',
-                    fontSize: 18
-                }}
+        { (back) ?
+            <TouchableOpacity
+                onPress={ () => navigation.goBack(null) }
+                style={ styles.topSegment }
             >
-                {'<'}
-            </Text>
-        </TouchableOpacity>
+                <Text
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 18
+                    }}
+                >
+                    {'<'}
+                </Text>
+            </TouchableOpacity>
+        : null }
 
 		<View style={ styles.topSegmentMid }>
             <Text style={ styles.headerTitle }>
@@ -42,7 +44,9 @@ const Header = ({ navigation, title }) => (
             </Text>
         </View>
 
-		<View style={ styles.topSegment }></View>
+        { (back) ?
+    		<View style={ styles.topSegment }></View>
+        : null }
 	</View>
 );
 

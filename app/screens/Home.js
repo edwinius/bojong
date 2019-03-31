@@ -31,113 +31,65 @@ export default class Home extends React.Component{
 		}
     }
 
-    _ShowMenuStatis() {
+    _ShowHomePariwisata() {
         const navigation = this.props.navigation;
 
-        const arrMenuStatis = [
+        const arr_img = [
             {
-                menuName: 'Penduduk',
-                menuImg: require('../../assets/icons/icon_umum.png'),
-                menuScreen: 'DataPenduduk'
+                'title': 'Air Terjun',
+                'img': require('../../assets/images/pariwisata_air_terjun.jpg')
             },
             {
-                menuName: 'Kesehatan',
-                menuImg: require('../../assets/icons/icon_kesehatan.png'),
-                menuScreen: 'TempatKesehatan'
+                'title': 'Jembatan Cisaat',
+                'img': require('../../assets/images/pariwisata_jembatan.jpg')
             },
-            {
-                menuName: 'Pendidikan',
-                menuImg: require('../../assets/icons/icon_pendidikan.png'),
-                menuScreen: 'TempatPendidikan'
-            },
-            {
-                menuName: 'Pariwisata',
-                menuImg: require('../../assets/icons/icon_pariwisata.png'),
-                menuScreen: 'TempatPariwisata'
-            },
-            {
-                menuName: 'Tempat Ibadah',
-                menuImg: require('../../assets/icons/icon_ibadah.png'),
-                menuScreen: 'TempatIbadah'
-            },
-            {
-                menuName: 'Pembangunan',
-                menuImg: require('../../assets/icons/icon_pembangunan.png'),
-                menuScreen: 'TempatIbadah'
-            }
-        ];
+        ]
 
-        const contentMenuStatis = arrMenuStatis.map(function(statis, index) {
+        const img = arr_img.map(function(v, i) {
             return(
                 <TouchableOpacity
-                    key={ index }
-                    style={ styles.btnMenu }
-                    onPress={() => navigation.navigate(`${statis.menuScreen}`)}
+                    key={ i }
+                    style={{
+                        marginHorizontal: 10
+                    }}
+                    onPress={ () => {navigation.navigate('TempatDetail', 
+                        {
+                            title: v.title,
+                            img: v.img
+                        }
+                    )} }
                 >
-                    <View style={ styles.containerIconMenu }>
+                    <View
+                        style={{
+                            backgroundColor: 'white'
+                        }}
+                    >
                         <Image
-                            style={ styles.iconMenu } 
-                            source={ statis.menuImg }
-                            resizeMode='contain'
+                            source={ v.img }
+                            style={{
+                                width: dWidth * 0.65,
+                                height: dWidth * 0.65 * 0.6,
+                            }}
+                            resizeMode='cover'
                         />
                     </View>
-                    <View style={ styles.containerTxtMenu }>
-                        <Text style={ styles.txtMenu }>
-                            { statis.menuName }
+
+                    <View
+                        style={{
+                            paddingVertical: 5,
+                        }}
+                    >
+                        <Text
+
+                        >
+                            { v.title }
                         </Text>
                     </View>
                 </TouchableOpacity>
             );
         });
 
-        return contentMenuStatis;
-    }
-
-    _ShowMenuDinamis() {
-        const navigation = this.props.navigation;
-
-        const arrMenuDinamis = [
-            {
-                menuName: 'Penduduk',
-                menuImg: require('../../assets/icons/icon_umum.png'),
-                menuScreen: 'DinamisPenduduk'
-            },
-            {
-                menuName: 'Kesehatan',
-                menuImg: require('../../assets/icons/icon_kesehatan.png'),
-                menuScreen: 'DinamisKesehatan'
-            },
-            {
-                menuName: 'Pendidikan',
-                menuImg: require('../../assets/icons/icon_pendidikan.png'),
-                menuScreen: 'DinamisPendidikan'
-            }
-        ];
-
-        const contentMenuDinamis = arrMenuDinamis.map(function(statis, index) {
-            return(
-                <TouchableOpacity
-                    key={ index }
-                    style={ styles.btnMenu }
-                    onPress={() => navigation.navigate(`${statis.menuScreen}`)}
-                >
-                    <View style={ styles.containerIconMenu }>
-                        <Image
-                            style={ styles.iconMenu } 
-                            source={ statis.menuImg }
-                            resizeMode='contain'
-                        />
-                    </View>
-                    <View style={ styles.containerTxtMenu }>
-                        <Text style={ styles.txtMenu }>
-                            { statis.menuName }
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            );
-        });
-
-        return contentMenuDinamis;
+        return (img);
     }
 
     onScroll(event) {
@@ -162,6 +114,7 @@ export default class Home extends React.Component{
 	}
 
     render() {
+        const navigation = this.props.navigation;
         const bannerImages = ['foto1', 'foto2', 'foto3', 'foto4'];
         const bannerImages2 = [
             require('../../assets/images/foto1.png'),
@@ -183,66 +136,30 @@ export default class Home extends React.Component{
         });
         
         return(
-            <View
+            <SafeAreaView
                 style={{
-                    flex: 1
+                    flex: 1,
+                    backgroundColor: 'rgb(52,73,100)',
+                    ...Platform.select({
+                        android: {
+                            paddingTop: 30
+                        }
+                    })
                 }}
             >
+                <StatusBar barStyle="light-content" />
+
                 <View
                     style={{
-                        height: 50,
-                        left: 0,
-                        width: '100%',
-                        position: 'absolute',
-                        zIndex: 5,
-                        top: 0
+                        flex: 1
                     }}
-                >
-                    <Banner />
-
-                    <View
-                        style={{
-                            height: 50,
-                            backgroundColor: `rgba(0, 61, 153, ${this.state.imageOpacity})`,
-                        }}
-                    >
-                        <TextInput
-                            style={{
-                                height: 50,
-                                flex: 1,
-                                borderRadius: 15,
-                                borderColor: '#cacaca',
-                                borderWidth: 1,
-                                paddingHorizontal: 20,
-                                shadowColor: 'grey',
-                                shadowOffset: { width: 1.5, height: 1.5 },
-                                shadowRadius: 2,
-                                shadowOpacity: 0.35,
-                                elevation: 3,
-                                marginVertical: 10,
-                                marginHorizontal: 15,
-                                backgroundColor: 'rgba(255, 255, 255, 0.7)'
-                            }}
-                            placeholder='Search'
-                        ></TextInput>
-                    </View>
-                </View>
-
-                <SafeAreaView
-                    forceInset={{ top: 'always', bottom: 'never' }}
-                    style={{
-                        ...Platform.select({
-                            android: {
-                                paddingTop: 30
-                            }
-                        })
-                    }}
-                >
+                >   
                     <ScrollView
                         onScroll={this.onScroll.bind(this)}
                         scrollEventThrottle={16}
                         style={{
                             backgroundColor: 'white',
+                            width: '100%'
                         }}
                     >
                         <View style={ styles.containerCarousel }>
@@ -259,32 +176,116 @@ export default class Home extends React.Component{
 
                         <View
                             style={{
-                                paddingBottom: 25,
+                                borderWidth: 0.3,
+                                marginTop: 28,
+                                marginHorizontal: 40,
+                                paddingVertical: 10,
+                                shadowColor: 'grey',
+                                shadowOffset: { width: 1.5, height: 1.5 },
+                                shadowRadius: 2,
+                                shadowOpacity: 0.35,
+                                elevation: 3,
+                                backgroundColor: 'white',
+                                borderRadius: 20,
+                                flex: 1,
                             }}
                         >
-                            <View>
-                                <View style={ styles.containerTxtMenuHeader }>
-                                    <Text style={ styles.txtMenuHeader }>Data Statis</Text>
-                                </View>
-
-                                <View style={ styles.containerMenu }>
-                                    { this._ShowMenuStatis() }
-                                </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    alignContent: 'center',
+                                    paddingVertical: 6
+                                }}
+                            >
+                                <Image
+                                    source={require('../../assets/logo_bojong.png')}
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                    }}
+                                />
                             </View>
 
-                            <View>
-                                <View style={ styles.containerTxtMenuHeader }>
-                                    <Text style={ styles.txtMenuHeader }>Data Dinamis</Text>
-                                </View>
-                                
-                                <View style={ styles.containerMenu }>
-                                    { this._ShowMenuDinamis() }
-                                </View>
+                            <View
+                                style={{
+                                    paddingTop: 4
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 14,
+                                        color: '#444444'
+                                    }}
+                                >Selamat datang di Aplikasi{'\n'} Kecamatan Bojonggenteng
+                                </Text>
                             </View>
                         </View>
+
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                marginTop: 35,
+                                marginBottom: 45,
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('LayananPage')}
+                            >
+                                <Image
+                                    style={{
+                                        width: 180,
+                                        height: 180
+                                    }}
+                                    source={require('../../assets/tombol.png')} 
+                                />
+                            </TouchableOpacity>
+                        </View>
+
+                        <View
+                            style={{
+                                marginBottom: 50,
+                                backgroundColor: '#f2f2f2'
+                            }}
+                        >
+                            <View
+                                style={{
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 10,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: '#333333',
+                                        fontWeight: 'bold',
+                                        fontSize: 18,
+                                    }}
+                                >
+                                    Pariwisata
+                                </Text>
+                            </View>
+
+                            <ScrollView
+                                horizontal={true}
+                                style={{
+                                    flexDirection: 'row',
+                                    paddingVertical: 10,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: 'row'
+                                    }}
+                                >
+                                    { this._ShowHomePariwisata() }
+                                </View>
+                            </ScrollView>
+                        </View>
                     </ScrollView>
-                </SafeAreaView>
-            </View>
+                </View>
+            </SafeAreaView>
         );
     }
 }

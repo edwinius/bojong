@@ -2,6 +2,8 @@ import React from 'react';
 import { 
     AsyncStorage,
     Image,
+    Platform,
+    SafeAreaView,
     Text,
     View,
 } from "react-native";
@@ -20,40 +22,51 @@ export default class InboxHome extends React.Component{
 
     render() {
         return(
-            <View
+            <SafeAreaView
                 style={{
-                    flex: 1
+                    flex: 1,
+                    backgroundColor: 'rgb(52,73,100)',
+                    ...Platform.select({
+                        android: {
+                            paddingTop: 30,
+                        }
+                    })
                 }}
             >
-                <Banner />
-
                 <View
                     style={{
-                        alignItems: 'center',
-                        paddingTop: 50,
-                        paddingBottom: 40,
+                        flex: 1,
+                        backgroundColor: 'white'
                     }}
                 >
-                    <Image
-                        source={ require('../../assets/logo_bojong.png') }
+                    <View
                         style={{
-                            width: 200,
-                            height: 200
-                        }}
-                    />
-                </View>
-
-                <View>
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            marginTop: 50
+                            alignItems: 'center',
+                            paddingTop: 50,
+                            paddingBottom: 40,
                         }}
                     >
-                        Belum ada pesan. Silahkan periksa lagi nanti.
-                    </Text>
+                        <Image
+                            source={ require('../../assets/logo_bojong.png') }
+                            style={{
+                                width: 200,
+                                height: 200
+                            }}
+                        />
+                    </View>
+
+                    <View>
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                marginTop: 50
+                            }}
+                        >
+                            Belum ada pesan. Silahkan periksa lagi nanti.
+                        </Text>
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
