@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
     Dimensions,
     Image,
     Platform,
@@ -14,21 +14,19 @@ import {
 } from "react-native";
 import Carousel from 'react-native-banner-carousel';
 
-import Banner from './common/Banner';
-
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 const bannerHeight = dWidth * 0.67;
 
-export default class Home extends React.Component{
+export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
-			imageOpacity: 0,
-			contentSize: 0,
-		}
+            imageOpacity: 0,
+            contentSize: 0,
+        }
     }
 
     _ShowHomePariwisata() {
@@ -45,19 +43,21 @@ export default class Home extends React.Component{
             },
         ]
 
-        const img = arr_img.map(function(v, i) {
-            return(
+        const img = arr_img.map(function (v, i) {
+            return (
                 <TouchableOpacity
-                    key={ i }
+                    key={i}
                     style={{
                         marginHorizontal: 10
                     }}
-                    onPress={ () => {navigation.navigate('TempatDetail', 
-                        {
-                            title: v.title,
-                            img: v.img
-                        }
-                    )} }
+                    onPress={() => {
+                        navigation.navigate('TempatDetail',
+                            {
+                                title: v.title,
+                                img: v.img
+                            }
+                        )
+                    }}
                 >
                     <View
                         style={{
@@ -65,7 +65,7 @@ export default class Home extends React.Component{
                         }}
                     >
                         <Image
-                            source={ v.img }
+                            source={v.img}
                             style={{
                                 width: dWidth * 0.65,
                                 height: dWidth * 0.65 * 0.6,
@@ -82,7 +82,7 @@ export default class Home extends React.Component{
                         <Text
 
                         >
-                            { v.title }
+                            {v.title}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -93,49 +93,66 @@ export default class Home extends React.Component{
     }
 
     onScroll(event) {
-		const scrollY = event.nativeEvent.contentOffset.y;
-		let layoutHeight = event.nativeEvent.layoutMeasurement.height;
-		let contentSize = event.nativeEvent.contentSize.height;
+        const scrollY = event.nativeEvent.contentOffset.y;
+        let layoutHeight = event.nativeEvent.layoutMeasurement.height;
+        let contentSize = event.nativeEvent.contentSize.height;
 
-		let stateContentSize = this.state.contentSize;
+        let stateContentSize = this.state.contentSize;
 
-		// Change top search opacity
-		if (scrollY >= 0) {
-			let newOpacity = (scrollY / 250.0);
-			if (newOpacity < 0) newOpacity = 0;
-			this.setState({
-				imageOpacity: newOpacity,
-			});
-		} else {
-			this.setState({
-			  imageOpacity: 0
-			});
-		}
-	}
+        // Change top search opacity
+        if (scrollY >= 0) {
+            let newOpacity = (scrollY / 250.0);
+            if (newOpacity < 0) newOpacity = 0;
+            this.setState({
+                imageOpacity: newOpacity,
+            });
+        } else {
+            this.setState({
+                imageOpacity: 0
+            });
+        }
+    }
 
     render() {
         const navigation = this.props.navigation;
-        const bannerImages = ['foto1', 'foto2', 'foto3', 'foto4'];
         const bannerImages2 = [
-            require('../../assets/images/foto1.png'),
-            require('../../assets/images/foto2.png'),
-            require('../../assets/images/foto3.png'),
-            require('../../assets/images/foto4.png')
+            {
+                btnImage: require('../../assets/kolom_berita/berita_hot/hot_bcl.png'),
+                btnPage: 'NewsDetail'
+            },
+            {
+                btnImage: require('../../assets/kolom_berita/berita_hot/hot_agnez.png'),
+                btnPage: 'NewsDetail'
+            },
+            {
+                btnImage: require('../../assets/kolom_berita/berita_hot/hot_us.png'),
+                btnPage: 'NewsDetail'
+            },
+            {
+                btnImage: require('../../assets/kolom_berita/berita_hot/hot_rossa.png'),
+                btnPage: 'NewsDetail'
+            },
         ];
-		
-		const contentBanner = bannerImages2.map(function(item, index) {
-			return(
-				<Image 
-					key={ index }
-					style={{ width: dWidth, height: bannerHeight }}
-                    //source={{ uri: `${global.uri}assets/images/site/${item}.png`}}
-                    source={ item }
-					resizeMode='contain'
-				/>
-			);
+
+        const contentBanner = bannerImages2.map(function (item, index) {
+            return (
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => navigation.navigate(`${item.btnPage}`)}
+                >
+                    <View>
+                        <Image
+                            style={{ width: dWidth, height: bannerHeight }}
+                            //source={{ uri: `${global.uri}assets/images/site/${item}.png`}}
+                            source={item.btnImage}
+                            resizeMode='contain'
+                        />
+                    </View>
+                </TouchableOpacity>
+            );
         });
-        
-        return(
+
+        return (
             <SafeAreaView
                 style={{
                     flex: 1,
@@ -153,7 +170,7 @@ export default class Home extends React.Component{
                     style={{
                         flex: 1
                     }}
-                >   
+                >
                     <ScrollView
                         onScroll={this.onScroll.bind(this)}
                         scrollEventThrottle={16}
@@ -162,22 +179,48 @@ export default class Home extends React.Component{
                             width: '100%'
                         }}
                     >
-                        <View style={ styles.containerCarousel }>
-							<Carousel
-								autoplay
-								autoplayTimeout={2000}
-								loop
-								index={0}
-								pageSize={dWidth}
-							>
-								{ contentBanner }
-							</Carousel>
-						</View>
+                        <View
+                            style={{
+                                backgroundColor: 'white',
+                                height: 185,
+                                width: '100%',
+                            }}
+                        >
+                            <View
+                                style={{
+                                    paddingHorizontal: 25,
+                                    paddingVertical: 10,
+                                    backgroundColor: 'rgb(52,73,100)',
+                                    width: '100%'
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 17,
+                                        color: "white"
+                                    }}
+                                >Berita HOT!</Text>
+                            </View>
+                            <View style={{
+                                marginTop: -40
+                            }}>
+                                <Carousel
+                                    autoplay
+                                    autoplayTimeout={4500}
+                                    loop
+                                    index={0}
+                                    pageSize={dWidth}
+                                >
+                                    {contentBanner}
+                                </Carousel>
+                            </View>
+                        </View>
 
                         <View
                             style={{
                                 borderWidth: 0.3,
-                                marginTop: 28,
+                                marginTop: 50,
                                 marginHorizontal: 40,
                                 paddingVertical: 10,
                                 shadowColor: 'grey',
@@ -227,7 +270,7 @@ export default class Home extends React.Component{
                         <View
                             style={{
                                 alignItems: 'center',
-                                marginTop: 35,
+                                marginTop: 15,
                                 marginBottom: 45,
                             }}
                         >
@@ -239,7 +282,7 @@ export default class Home extends React.Component{
                                         width: 180,
                                         height: 180
                                     }}
-                                    source={require('../../assets/tombol.png')} 
+                                    source={require('../../assets/tombol.png')}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -279,7 +322,7 @@ export default class Home extends React.Component{
                                         flexDirection: 'row'
                                     }}
                                 >
-                                    { this._ShowHomePariwisata() }
+                                    {this._ShowHomePariwisata()}
                                 </View>
                             </ScrollView>
                         </View>
@@ -337,14 +380,14 @@ const styles = StyleSheet.create({
     },
 
     // Carousel
-	containerCarousel: {
-		flex: 1,
-		backgroundColor: '#fff',
-		justifyContent: 'center',
-		elevation: 10,
-		shadowColor: 'grey',
-		shadowOffset: { width: 1.5, height: 2 },
-		shadowRadius: 2,
-		shadowOpacity: 0.85,
-	},
+    containerCarousel: {
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        elevation: 10,
+        shadowColor: 'grey',
+        shadowOffset: { width: 1.5, height: 2 },
+        shadowRadius: 2,
+        shadowOpacity: 0.85,
+    },
 });
