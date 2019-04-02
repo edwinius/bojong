@@ -33,6 +33,9 @@ import ProfileUser from './screens/ProfileUser';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 
+// Import News
+import NewsDetail from './screens/NewsDetail';
+
 // Admin
 import AdminHome from './screens/admin/AdminHome';
 import DataPenduduk from './screens/admin/DataPenduduk';
@@ -52,9 +55,9 @@ const InboxScreen = createStackNavigator({
 		screen: InboxHome,
 	},
 }, {
-	headerMode: 'none',
-	mode: 'modal',
-});
+		headerMode: 'none',
+		mode: 'modal',
+	});
 
 export const InboxContainer = createAppContainer(InboxScreen);
 
@@ -64,8 +67,8 @@ const UserScreen = createStackNavigator({
 		screen: ProfileUser,
 	}
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const UserContainer = createAppContainer(UserScreen);
 
@@ -78,8 +81,8 @@ const SignedOutScreen = createStackNavigator({
 		screen: SignUp
 	},
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const SignedOutContainer = createAppContainer(SignedOutScreen);
 
@@ -95,8 +98,8 @@ const ProfileScreen = createSwitchNavigator({
 		screen: UserContainer
 	},
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const ProfileContainer = createAppContainer(ProfileScreen);
 
@@ -106,9 +109,9 @@ const ElaporScreen = createStackNavigator({
 		screen: Elapor,
 	},
 }, {
-	headerMode: 'none',
-	mode: 'modal',
-});
+		headerMode: 'none',
+		mode: 'modal',
+	});
 
 export const ElaporContainer = createAppContainer(ElaporScreen);
 
@@ -117,10 +120,13 @@ const NewsScreen = createStackNavigator({
 	NewsHome: {
 		screen: NewsHome,
 	},
+	NewsDetail: {
+		screen: NewsDetail
+	}
 }, {
-	headerMode: 'none',
-	mode: 'modal',
-});
+		headerMode: 'none',
+
+	});
 
 export const NewsContainer = createAppContainer(NewsScreen);
 
@@ -136,47 +142,47 @@ const HomeScreen = createStackNavigator({
 		screen: LayananPage,
 	},
 	KtpPage: {
-        screen: KtpPage
-    },
-    KK: {
-        screen: KK
-    },
-    PageSuratPindah: {
-        screen: PageSuratPindah
-    },
-    ImbDibawah200m: {
-        screen: ImbDibawah200m
-    },
-    ImbDiatas200m: {
-        screen: ImbDiatas200m
-    },
-    Jampersal: {
-        screen: Jampersal
-    },
-    SIUPdanTDP: {
-        screen: SIUPdanTDP
-    },
-    VISUM: {
-        screen: VISUM
-    },
-    PPATS: {
-        screen: PPATS
-    },
-    PageAhliWaris: {
-        screen: PageAhliWaris
-    },
-    PagePinjamBank: {
-        screen: PagePinjamBank
-    },
-    IzinReklame: {
-        screen: IzinReklame
-    },
-    IzinRame: {
-        screen: IzinRame
-    },
+		screen: KtpPage
+	},
+	KK: {
+		screen: KK
+	},
+	PageSuratPindah: {
+		screen: PageSuratPindah
+	},
+	ImbDibawah200m: {
+		screen: ImbDibawah200m
+	},
+	ImbDiatas200m: {
+		screen: ImbDiatas200m
+	},
+	Jampersal: {
+		screen: Jampersal
+	},
+	SIUPdanTDP: {
+		screen: SIUPdanTDP
+	},
+	VISUM: {
+		screen: VISUM
+	},
+	PPATS: {
+		screen: PPATS
+	},
+	PageAhliWaris: {
+		screen: PageAhliWaris
+	},
+	PagePinjamBank: {
+		screen: PagePinjamBank
+	},
+	IzinReklame: {
+		screen: IzinReklame
+	},
+	IzinRame: {
+		screen: IzinRame
+	},
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const HomeContainer = createAppContainer(HomeScreen);
 
@@ -189,7 +195,7 @@ const SignedInHome = createBottomTabNavigator({
 			tabBarLabel: 'Home',
 			tabBarIcon: () =>
 				<Image
-					source={ require('../assets/icons/home_black.png') }
+					source={require('../assets/icons/home_black.png')}
 					style={{
 						width: 35,
 						height: 35,
@@ -204,7 +210,7 @@ const SignedInHome = createBottomTabNavigator({
 			tabBarLabel: 'Berita  ',
 			tabBarIcon: () =>
 				<Image
-					source={ require('../assets/icons/news_black.png') }
+					source={require('../assets/icons/news_black.png')}
 					style={{
 						width: 27,
 						height: 27,
@@ -219,7 +225,7 @@ const SignedInHome = createBottomTabNavigator({
 			tabBarLabel: 'Lapor',
 			tabBarIcon: () =>
 				<Image
-					source={ require('../assets/icons/lapor_black.png') }
+					source={require('../assets/icons/lapor_black.png')}
 					style={{
 						width: 30,
 						height: 30,
@@ -234,7 +240,7 @@ const SignedInHome = createBottomTabNavigator({
 			tabBarLabel: 'Inbox',
 			tabBarIcon: () =>
 				<Image
-					source={ require('../assets/icons/message_black.png') }
+					source={require('../assets/icons/message_black.png')}
 					style={{
 						width: 35,
 						height: 35,
@@ -249,7 +255,7 @@ const SignedInHome = createBottomTabNavigator({
 			tabBarLabel: 'Profile',
 			tabBarIcon: () =>
 				<Image
-					source={ require('../assets/icons/profile_black.png') }
+					source={require('../assets/icons/profile_black.png')}
 					style={{
 						width: 30,
 						height: 30,
@@ -258,21 +264,21 @@ const SignedInHome = createBottomTabNavigator({
 		}
 	},
 }, {
-	tabBarOptions: {
-		showIcon: true,
-		style: {
-			backgroundColor: '#ffffff',
-			borderTopWidth: 0.5,
-			borderColor: 'grey',
-		},
-		activeTintColor: '#ff4d4d',
-		inactiveTintColor: 'grey',
-		indicatorStyle: {
-			backgroundColor: '#ff4d4d',
-		},
-		//scrollEnabled: true,
-	}
-});
+		tabBarOptions: {
+			showIcon: true,
+			style: {
+				backgroundColor: '#ffffff',
+				borderTopWidth: 0.5,
+				borderColor: 'grey',
+			},
+			activeTintColor: '#ff4d4d',
+			inactiveTintColor: 'grey',
+			indicatorStyle: {
+				backgroundColor: '#ff4d4d',
+			},
+			//scrollEnabled: true,
+		}
+	});
 
 export const SignedInHomeContainer = createAppContainer(SignedInHome);
 
@@ -306,23 +312,23 @@ const AdminScreen = createStackNavigator({
 		screen: DinamisPendidikan
 	}
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const AdminContainer = createAppContainer(AdminScreen);
 
 // SignedIn Screen
 const SignedIn = createStackNavigator({
-    SignedInHome: {
+	SignedInHome: {
 		screen: SignedInHomeContainer
 	},
 	Admin: {
 		screen: AdminContainer
 	}
 }, {
-	headerMode: 'none',
-	mode: 'modal',
-});
+		headerMode: 'none',
+		mode: 'modal',
+	});
 
 export const SignedInContainer = createAppContainer(SignedIn);
 
