@@ -9,8 +9,8 @@ import {
     View,
 } from "react-native";
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
@@ -72,7 +72,7 @@ export default class TempatKesehatan extends React.Component{
                 >
                     <View>
                         <Image
-                            source={ require('../../assets/images/kesehatan_kasih.jpg') }
+                            source={ require('../../../assets/images/kesehatan_kasih.jpg') }
                             style={{
                                 width: dWidth * 0.3,
                                 height: dWidth * 0.3 * 0.6
@@ -130,6 +130,7 @@ export default class TempatKesehatan extends React.Component{
                 <Header 
 					navigation={navigation} 
 					title='Tempat Kesehatan'
+                    back={true}
 				/>
 
                 <ScrollView
@@ -162,7 +163,7 @@ export default class TempatKesehatan extends React.Component{
                             }}
                         >
                             <Image
-                                source={ require('../../assets/images/kesehatan_kasih.jpg') }
+                                source={ require('../../../assets/images/kesehatan_kasih.jpg') }
                                 style={{
                                     width: dWidth,
                                     height: dWidth * 0.6

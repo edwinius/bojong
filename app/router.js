@@ -6,11 +6,6 @@ import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator, 
 import Home from './screens/Home';
 import Elapor from './screens/Elapor';
 import NewsHome from './screens/NewsHome';
-import DataPenduduk from './screens/DataPenduduk';
-import TempatIbadah from './screens/TempatIbadah';
-import TempatPariwisata from './screens/TempatPariwisata';
-import TempatKesehatan from './screens/TempatKesehatan';
-import TempatPendidikan from './screens/TempatPendidikan';
 import TempatDetail from './screens/TempatDetail';
 
 //Import Layanan Pages
@@ -34,16 +29,22 @@ import InboxHome from './screens/InboxHome';
 
 // Import Profile
 import ProfileHome from './screens/ProfileHome';
+import ProfileUser from './screens/ProfileUser';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 
 // Admin
 import AdminHome from './screens/admin/AdminHome';
+import DataPenduduk from './screens/admin/DataPenduduk';
+import TempatIbadah from './screens/admin/TempatIbadah';
+import TempatPariwisata from './screens/admin/TempatPariwisata';
+import TempatKesehatan from './screens/admin/TempatKesehatan';
+import TempatPendidikan from './screens/admin/TempatPendidikan';
 
 // Menu Dinamis
-import DinamisPenduduk from './screens/DinamisPenduduk';
-import DinamisKesehatan from './screens/DinamisKesehatan';
-import DinamisPendidikan from './screens/DinamisPendidikan';
+import DinamisPenduduk from './screens/admin/DinamisPenduduk';
+import DinamisKesehatan from './screens/admin/DinamisKesehatan';
+import DinamisPendidikan from './screens/admin/DinamisPendidikan';
 
 // Inbox
 const InboxScreen = createStackNavigator({
@@ -57,17 +58,42 @@ const InboxScreen = createStackNavigator({
 
 export const InboxContainer = createAppContainer(InboxScreen);
 
-// Profile
-const ProfileScreen = createStackNavigator({
-	ProfileHome: {
-		screen: ProfileHome,
-	},
+// User
+const UserScreen = createStackNavigator({
+	ProfileUser: {
+		screen: ProfileUser,
+	}
+}, {
+	headerMode: 'none',
+});
+
+export const UserContainer = createAppContainer(UserScreen);
+
+// SignedOut
+const SignedOutScreen = createStackNavigator({
 	SignIn: {
 		screen: SignIn,
 	},
 	SignUp: {
 		screen: SignUp
-	}
+	},
+}, {
+	headerMode: 'none',
+});
+
+export const SignedOutContainer = createAppContainer(SignedOutScreen);
+
+// Profile
+const ProfileScreen = createSwitchNavigator({
+	ProfileHome: {
+		screen: ProfileHome,
+	},
+	SignedOut: {
+		screen: SignedOutContainer
+	},
+	User: {
+		screen: UserContainer
+	},
 }, {
 	headerMode: 'none',
 });
@@ -148,30 +174,6 @@ const HomeScreen = createStackNavigator({
     IzinRame: {
         screen: IzinRame
     },
-	DataPenduduk: {
-		screen: DataPenduduk
-	},
-	TempatIbadah: {
-		screen: TempatIbadah
-	},
-	TempatPariwisata: {
-		screen: TempatPariwisata
-	},
-	TempatKesehatan: {
-		screen: TempatKesehatan
-	},
-	TempatPendidikan: {
-		screen: TempatPendidikan
-	},
-	DinamisPenduduk: {
-		screen: DinamisPenduduk
-	},
-	DinamisKesehatan: {
-		screen: DinamisKesehatan
-	},
-	DinamisPendidikan: {
-		screen: DinamisPendidikan
-	}
 }, {
 	headerMode: 'none',
 });
@@ -274,13 +276,52 @@ const SignedInHome = createBottomTabNavigator({
 
 export const SignedInHomeContainer = createAppContainer(SignedInHome);
 
+// Admin
+const AdminScreen = createStackNavigator({
+	AdminHome: {
+		screen: AdminHome,
+	},
+	DataPenduduk: {
+		screen: DataPenduduk
+	},
+	TempatIbadah: {
+		screen: TempatIbadah
+	},
+	TempatPariwisata: {
+		screen: TempatPariwisata
+	},
+	TempatKesehatan: {
+		screen: TempatKesehatan
+	},
+	TempatPendidikan: {
+		screen: TempatPendidikan
+	},
+	DinamisPenduduk: {
+		screen: DinamisPenduduk
+	},
+	DinamisKesehatan: {
+		screen: DinamisKesehatan
+	},
+	DinamisPendidikan: {
+		screen: DinamisPendidikan
+	}
+}, {
+	headerMode: 'none',
+});
+
+export const AdminContainer = createAppContainer(AdminScreen);
+
 // SignedIn Screen
 const SignedIn = createStackNavigator({
     SignedInHome: {
 		screen: SignedInHomeContainer
+	},
+	Admin: {
+		screen: AdminContainer
 	}
 }, {
-    headerMode: 'none',
+	headerMode: 'none',
+	mode: 'modal',
 });
 
 export const SignedInContainer = createAppContainer(SignedIn);

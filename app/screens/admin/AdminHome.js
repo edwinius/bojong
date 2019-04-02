@@ -12,9 +12,10 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import Carousel from 'react-native-banner-carousel';
 
-import Banner from '../common/Banner';
+import globalConst from '../../globalConst';
+
+const styleGeneral = require('../styles/StyleGeneral');
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
@@ -162,35 +163,18 @@ export default class Home extends React.Component{
 	}
 
     render() {
-        const bannerImages = ['foto1', 'foto2', 'foto3', 'foto4'];
-        const bannerImages2 = [
-            require('../../../assets/images/foto1.png'),
-            require('../../../assets/images/foto2.png'),
-            require('../../../assets/images/foto3.png'),
-            require('../../../assets/images/foto4.png')
-        ];
-		
-		const contentBanner = bannerImages2.map(function(item, index) {
-			return(
-				<Image 
-					key={ index }
-					style={{ width: dWidth, height: bannerHeight }}
-                    //source={{ uri: `${global.uri}assets/images/site/${item}.png`}}
-                    source={ item }
-					resizeMode='contain'
-				/>
-			);
-        });
         
         return(
+            
             <View
                 style={{
-                    flex: 1
+                    flex: 1,
+                    backgroundColor: 'white'
                 }}
             >
                 <View
                     style={{
-                        height: 50,
+                        height: 40,
                         left: 0,
                         width: '100%',
                         position: 'absolute',
@@ -198,7 +182,26 @@ export default class Home extends React.Component{
                         top: 0
                     }}
                 >
-                    <Banner />
+                    <SafeAreaView 
+                        style={ styleGeneral.safeAreaView }
+                        forceInset={{ top: 'always', bottom: 'never' }}
+                    ></SafeAreaView>
+
+                    <View
+                        style={{
+                            backgroundColor: globalConst.COLOR.SAFEAREA
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: 'white',
+                                paddingVertical: 10,
+                                paddingHorizontal: 15,
+                            }}
+                        >
+                            Kecamatan Bojonggenteng
+                        </Text>
+                    </View>
 
                     <View
                         style={{
@@ -228,62 +231,53 @@ export default class Home extends React.Component{
                     </View>
                 </View>
 
-                <SafeAreaView
-                    forceInset={{ top: 'always', bottom: 'never' }}
+                <SafeAreaView 
                     style={{
+                        backgroundColor: globalConst.COLOR.SAFEAREA,
                         ...Platform.select({
                             android: {
                                 paddingTop: 30
                             }
                         })
                     }}
+                    forceInset={{ top: 'always', bottom: 'never' }}
                 >
-                    <ScrollView
-                        onScroll={this.onScroll.bind(this)}
-                        scrollEventThrottle={16}
+                </SafeAreaView>
+
+                <ScrollView
+                    onScroll={this.onScroll.bind(this)}
+                    scrollEventThrottle={16}
+                    style={{
+                        backgroundColor: 'white',
+                    }}
+                >
+                    <View
                         style={{
-                            backgroundColor: 'white',
+                            paddingBottom: 25,
+                            paddingTop: 75,
                         }}
                     >
-                        <View style={ styles.containerCarousel }>
-							<Carousel
-								autoplay
-								autoplayTimeout={2000}
-								loop
-								index={0}
-								pageSize={dWidth}
-							>
-								{ contentBanner }
-							</Carousel>
-						</View>
-
-                        <View
-                            style={{
-                                paddingBottom: 25,
-                            }}
-                        >
-                            <View>
-                                <View style={ styles.containerTxtMenuHeader }>
-                                    <Text style={ styles.txtMenuHeader }>Data Statis</Text>
-                                </View>
-
-                                <View style={ styles.containerMenu }>
-                                    { this._ShowMenuStatis() }
-                                </View>
+                        <View>
+                            <View style={ styles.containerTxtMenuHeader }>
+                                <Text style={ styles.txtMenuHeader }>Data Statis</Text>
                             </View>
 
-                            <View>
-                                <View style={ styles.containerTxtMenuHeader }>
-                                    <Text style={ styles.txtMenuHeader }>Data Dinamis</Text>
-                                </View>
-                                
-                                <View style={ styles.containerMenu }>
-                                    { this._ShowMenuDinamis() }
-                                </View>
+                            <View style={ styles.containerMenu }>
+                                { this._ShowMenuStatis() }
                             </View>
                         </View>
-                    </ScrollView>
-                </SafeAreaView>
+
+                        <View>
+                            <View style={ styles.containerTxtMenuHeader }>
+                                <Text style={ styles.txtMenuHeader }>Data Dinamis</Text>
+                            </View>
+                            
+                            <View style={ styles.containerMenu }>
+                                { this._ShowMenuDinamis() }
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
             </View>
         );
     }

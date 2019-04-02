@@ -38,7 +38,7 @@ module.exports = StyleSheet.create({
         fontSize: 16,
     },
     containerFormInput: {
-        paddingTop: 10,
+        paddingTop: 5,
     },
     inputForm: {
         borderBottomColor: '#e0e0e0',

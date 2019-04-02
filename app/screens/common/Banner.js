@@ -7,6 +7,8 @@ import {
     View
 } from 'react-native';
 
+import globalConst from '../../globalConst';
+
 export default class Banner extends React.Component {
     render() {
         return(
@@ -22,10 +24,8 @@ export default class Banner extends React.Component {
 
 const styles = StyleSheet.create({
     banner: {
-        backgroundColor: 'rgb(0, 61, 153)',
+        backgroundColor: globalConst.COLOR.SAFEAREA,
         height: 50,
-        flex: 1,
-        width: 50,
 
         ...Platform.select({
 			android: {

@@ -9,13 +9,13 @@ import {
     View,
 } from "react-native";
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 
-export default class TempatPendidikan extends React.Component{
+export default class TempatPariwisata extends React.Component{
 
     constructor(props) {
         super(props);
@@ -55,7 +55,7 @@ export default class TempatPendidikan extends React.Component{
     
     componentDidMount() {
 		this.mounted = true;
-		this.getToken();
+		//this.getToken();
     }
 
     _ShowTempatIbadah() {
@@ -72,7 +72,7 @@ export default class TempatPendidikan extends React.Component{
                 >
                     <View>
                         <Image
-                            source={ require('../../assets/images/pendidikan_sekolah.jpg') }
+                            source={ require('../../../assets/images/pariwisata_air_terjun.jpg') }
                             style={{
                                 width: dWidth * 0.3,
                                 height: dWidth * 0.3 * 0.6
@@ -87,7 +87,7 @@ export default class TempatPendidikan extends React.Component{
                     >
                         <View>
                             <Text>
-                                Sekolah Menengah Bojonggenteng
+                                Air Terjun Bojonggenteng
                             </Text>
                         </View>
                         <View
@@ -105,7 +105,7 @@ export default class TempatPendidikan extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Sekolah Menengah Bojonggenteng
+                                Air Terjun 7 warna Bojonggenteng
                             </Text>
                         </View>
                     </View>
@@ -129,7 +129,8 @@ export default class TempatPendidikan extends React.Component{
 
                 <Header 
 					navigation={navigation} 
-					title='Tempat Pendidikan'
+					title='Tempat Pariwisata'
+                    back={true}
 				/>
 
                 <ScrollView
@@ -153,7 +154,7 @@ export default class TempatPendidikan extends React.Component{
                                     fontWeight: 'bold'
                                 }}
                             >
-                                Sekolah Menengah Bojonggenteng
+                                Jembatan Cisaat
                             </Text>
                         </View>
 
@@ -162,7 +163,7 @@ export default class TempatPendidikan extends React.Component{
                             }}
                         >
                             <Image
-                                source={ require('../../assets/images/pendidikan_sekolah.jpg') }
+                                source={ require('../../../assets/images/pariwisata_jembatan.jpg') }
                                 style={{
                                     width: dWidth,
                                     height: dWidth * 0.6
@@ -182,7 +183,7 @@ export default class TempatPendidikan extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Sekolah Menengah Bojonggenteng
+                                Jembatan terpanjang di Asia Tenggara yang terletak di Cisaat, Sukabumi
                             </Text>
                         </View>
                     </View>

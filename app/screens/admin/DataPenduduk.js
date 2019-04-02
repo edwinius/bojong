@@ -7,8 +7,8 @@ import {
     View
 } from 'react-native';
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
 export default class DataPenduduk extends React.Component {
 
@@ -31,14 +31,15 @@ export default class DataPenduduk extends React.Component {
         return(
             <View 
                 style={{
-                    flex: 1
+                    flex: 1,
                 }}
             >
                 <Banner />
 
                 <Header 
 					navigation={navigation} 
-					title='Data Penduduk'
+                    title='Data Penduduk'
+                    back={true}
 				/>
 
                 <View

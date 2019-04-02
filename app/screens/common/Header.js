@@ -9,7 +9,7 @@ import {
     View
 } from 'react-native';
 
-const Header = ({ navigation, title }) => ( 
+const Header = ({ navigation, title, back }) => ( 
 	<View
         style={{
             flexDirection: 'row',

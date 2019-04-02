@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    Alert,
+    AsyncStorage,
     SafeAreaView,
     ScrollView,
     Text,
@@ -21,7 +23,74 @@ export default class SignUp extends React.Component {
         
         this.state = {
             isLoading: false,
+			UserHandphone: '',
+			UserPassword: '',
+			UserPasswordConfirm: '',
         }
+    }
+
+    componentDidMount() {
+		this.mounted = true;
+	}
+	
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
+    UserRegister = () => {
+        const { UserHandphone, UserPassword, UserPasswordConfirm } = this.state;
+        const navigation = this.props.navigation;
+        
+        if(UserHandphone != '' && UserPassword != '' && UserPasswordConfirm != '') {
+            if(UserPassword == UserPasswordConfirm) {
+                this.setState({
+                    isLoading: true
+                });
+
+                fetch(`${global.api}register_data`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        appToken: global.appToken,
+                        data: {
+                            hp: UserHandphone,
+                            pass: UserPassword,
+                        }
+                    })
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    //console.log(responseJson);
+
+                    if(responseJson['status'] == '200') {
+                        const pid = responseJson['user_pid'];
+                        let admin = responseJson['user_admin'];
+
+                        AsyncStorage.setItem('userPid', pid);
+                        AsyncStorage.setItem('userAdmin', admin);
+                        AsyncStorage.setItem('userToken', pid);
+                        navigation.navigate('ProfileUser');
+                    } else {
+                        Alert.alert(responseJson['msg']);
+                    }
+
+                    if(this.mounted) {
+                        this.setState({
+                            isLoading: false
+                        });
+                    }
+                    
+                }).catch((error) => {
+                    console.error(error);
+                });
+            } else {
+                Alert.alert('Password dan ulangi password tidak sama');
+            }
+        } else {
+			Alert.alert('Mohon isi lengkap form');
+		}
     }
 
     render() {
@@ -58,7 +127,11 @@ export default class SignUp extends React.Component {
                                     </View>
 
                                     <View style={ styleFormSignInUp.containerFormInput }>
-                                        <TextInput style={ styleFormSignInUp.inputForm } />
+                                        <TextInput 
+                                            style={ styleFormSignInUp.inputForm }
+                                            onChangeText={ UserHandphone => this.setState({ UserHandphone })}
+                                            value={ this.state.UserHandphone }
+                                        />
                                     </View>
                                 </View>
                             </View>
@@ -76,6 +149,8 @@ export default class SignUp extends React.Component {
                                             style={ styleFormSignInUp.inputForm }
                                             autoCapitalize='none'
                                             secureTextEntry={true}
+                                            onChangeText={ UserPassword => this.setState({ UserPassword })}
+                                            value={ this.state.UserPassword }
                                         />
                                     </View>
                                 </View>
@@ -94,13 +169,18 @@ export default class SignUp extends React.Component {
                                             style={ styleFormSignInUp.inputForm }
                                             autoCapitalize='none'
                                             secureTextEntry={true}
+                                            onChangeText={ UserPasswordConfirm => this.setState({ UserPasswordConfirm })}
+                                            value={ this.state.UserPasswordConfirm }
                                         />
                                     </View>
                                 </View>
                             </View>
 
                             <View style={ styleFormSignInUp.formRow }>
-                                <TouchableOpacity style={ styleFormSignInUp.formBtn }>
+                                <TouchableOpacity 
+                                    style={ styleFormSignInUp.formBtn }
+                                    onPress={ this.UserRegister }
+                                >
                                     <Text style={ styleFormSignInUp.txtFormBtn }>
                                         Sign Up
                                     </Text>

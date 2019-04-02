@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    AsyncStorage,
     Image,
     Platform,
     SafeAreaView,
@@ -20,9 +21,47 @@ export default class ProfileUser extends React.Component {
         super(props);
         
         this.state = {
-            isLoading: false,
+            isLoading: true,
+            userPid: '',
+            userToken: '',
+            userAdmin: ''
         }
     }
+
+    async getToken() {
+		try {
+			const navigation = this.props.navigation;
+			let userPid = await AsyncStorage.getItem('userPid');
+            let userToken = await AsyncStorage.getItem('userToken');
+            let userAdmin = await AsyncStorage.getItem('userAdmin');
+
+            // If not logged set userPid & userToken to 0
+			if(userPid == null || userPid == '' || userToken == null || userToken == '') {
+				userPid = '',
+				userToken = ''
+            }
+            
+            if(this.mounted) {
+                this.setState({
+                    userPid: userPid,
+                    userToken: userToken,
+                    userAdmin: userAdmin,
+                    isLoading: false
+                });
+            }
+        } catch(error) {
+			console.log(error);
+		}
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+        this.getToken();
+	}
+	
+	componentWillUnmount() {
+		this.mounted = false;
+	}
 
     render() {
         if(this.state.isLoading) {
@@ -58,6 +97,30 @@ export default class ProfileUser extends React.Component {
                             />
                         </View>
 
+                        { this.state.userAdmin == '1' ?
+                            <View>
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: 'green',
+                                        alignItems: 'center',
+                                        marginHorizontal: 10,
+                                        paddingVertical: 10,
+                                    }}
+                                    onPress={() => navigation.navigate('Admin')}
+                                >
+                                    <Text
+                                        style={{
+                                            color: 'white',
+                                            fontSize: 16,
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Admin
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        : null }
+
                         <View>
                             <TouchableOpacity
                                 style={{
@@ -69,13 +132,18 @@ export default class ProfileUser extends React.Component {
                                     marginHorizontal: 15,
                                     marginTop: 50
                                 }}
+                                onPress={() => {
+                                    AsyncStorage.removeItem('userPid');
+                                    AsyncStorage.removeItem('userToken');
+                                    navigation.navigate('SignIn');
+                                }}
                             >
                                 <Text
                                     style={{
                                         color: '#333333'
                                     }}
                                 >
-                                    Sign In
+                                    Sign Out
                                 </Text>
                             </TouchableOpacity>
                         </View>

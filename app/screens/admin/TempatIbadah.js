@@ -9,13 +9,13 @@ import {
     View,
 } from "react-native";
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 
-export default class TempatPariwisata extends React.Component{
+export default class TempatIbadah extends React.Component{
 
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ export default class TempatPariwisata extends React.Component{
 				body: JSON.stringify({
                     appToken: global.appToken,
                     data: {
-                        categoryPid: 1
+                        categoryPid: 2
                     }
 				})
 			}).then((response) => response.json())
@@ -55,7 +55,7 @@ export default class TempatPariwisata extends React.Component{
     
     componentDidMount() {
 		this.mounted = true;
-		//this.getToken();
+		this.getToken();
     }
 
     _ShowTempatIbadah() {
@@ -72,7 +72,7 @@ export default class TempatPariwisata extends React.Component{
                 >
                     <View>
                         <Image
-                            source={ require('../../assets/images/pariwisata_air_terjun.jpg') }
+                            source={ require('../../../assets/images/masjid_darul_amal.jpg') }
                             style={{
                                 width: dWidth * 0.3,
                                 height: dWidth * 0.3 * 0.6
@@ -87,7 +87,7 @@ export default class TempatPariwisata extends React.Component{
                     >
                         <View>
                             <Text>
-                                Air Terjun Bojonggenteng
+                                Masjid Darul Amal
                             </Text>
                         </View>
                         <View
@@ -105,7 +105,7 @@ export default class TempatPariwisata extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Air Terjun 7 warna Bojonggenteng
+                                Masjid terbesar di kecamatan Bojonggenteng
                             </Text>
                         </View>
                     </View>
@@ -129,7 +129,8 @@ export default class TempatPariwisata extends React.Component{
 
                 <Header 
 					navigation={navigation} 
-					title='Tempat Pariwisata'
+					title='Tempat Ibadah'
+                    back={true}
 				/>
 
                 <ScrollView
@@ -153,7 +154,7 @@ export default class TempatPariwisata extends React.Component{
                                     fontWeight: 'bold'
                                 }}
                             >
-                                Jembatan Cisaat
+                                Masjid Darul Amal
                             </Text>
                         </View>
 
@@ -162,7 +163,7 @@ export default class TempatPariwisata extends React.Component{
                             }}
                         >
                             <Image
-                                source={ require('../../assets/images/pariwisata_jembatan.jpg') }
+                                source={ require('../../../assets/images/masjid_darul_amal.jpg') }
                                 style={{
                                     width: dWidth,
                                     height: dWidth * 0.6
@@ -182,7 +183,7 @@ export default class TempatPariwisata extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Jembatan terpanjang di Asia Tenggara yang terletak di Cisaat, Sukabumi
+                                Jl. Bojong, Blok XVI No. 33, RT 003 / RW 003 Kecamatan Bojonggenteng, Kabupaten Sukabumi, 199900
                             </Text>
                         </View>
                     </View>

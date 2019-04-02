@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    Alert,
+    AsyncStorage,
     SafeAreaView,
     ScrollView,
     Text,
@@ -21,8 +23,73 @@ export default class SignIn extends React.Component {
         
         this.state = {
             isLoading: false,
+            userHp: '',
+            userPass: ''
         }
     }
+
+    componentDidMount() {
+		this.mounted = true;
+	}
+	
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
+    UserLogin = () => {
+		const { userHp, userPass } = this.state;
+		const navigation = this.props.navigation;
+		
+		if(userHp != '' && userPass != '') {
+			this.setState({
+				isLoading: true
+			});
+			
+			fetch(`${global.api}auth_data`, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+                    appToken: global.appToken,
+                    data: {
+                        hp: userHp,
+                        pass: userPass
+                    }
+				})
+			}).then((response) => response.json())
+			.then((responseJson) => {
+				//console.log(responseJson);
+                
+                if(responseJson['status'] == '200') {
+                    const pid = responseJson['user_pid'];
+                    let admin = responseJson['user_admin'];
+                    //const token = responseJson['token'];
+                
+                    // Profile completed
+                    let timeStamp = Math.floor(Date.now() / 1000);
+                    AsyncStorage.setItem('userPid', pid);
+                    AsyncStorage.setItem('userAdmin', admin);
+                    AsyncStorage.setItem('userToken', pid);
+                    navigation.navigate('User', { 'refresh': `${timeStamp}` });
+				} else {
+					Alert.alert(responseJson['msg']);
+				}
+				
+				if(this.mounted) {
+					this.setState({
+						isLoading: false
+					});
+                }
+				
+			}).catch((error) => {
+				console.error(error);
+			});
+		} else {
+			Alert.alert('Mohon isi nomor Handphone dan Password');
+		}
+	}
 
     render() {
         if(this.state.isLoading) {
@@ -58,7 +125,12 @@ export default class SignIn extends React.Component {
                                     </View>
 
                                     <View style={ styleFormSignInUp.containerFormInput }>
-                                        <TextInput style={ styleFormSignInUp.inputForm } />
+                                        <TextInput 
+                                            style={ styleFormSignInUp.inputForm } 
+                                            placeholder='081xxxxxxxx'
+                                            onChangeText={ userHp => this.setState({ userHp })}
+                                            value={ this.state.userHp }
+                                        />
                                     </View>
                                 </View>
                             </View>
@@ -76,13 +148,19 @@ export default class SignIn extends React.Component {
                                             style={ styleFormSignInUp.inputForm }
                                             autoCapitalize='none'
                                             secureTextEntry={true}
+                                            placeholder='* * * * * * * *'
+                                            onChangeText={ userPass => this.setState({ userPass })}
+                                            value={ this.state.userPass }
                                         />
                                     </View>
                                 </View>
                             </View>
 
                             <View style={ styleFormSignInUp.formRow }>
-                                <TouchableOpacity style={ styleFormSignInUp.formBtn }>
+                                <TouchableOpacity 
+                                    style={ styleFormSignInUp.formBtn }
+                                    onPress={ this.UserLogin }
+                                >
                                     <Text style={ styleFormSignInUp.txtFormBtn }>
                                         Sign In
                                     </Text>

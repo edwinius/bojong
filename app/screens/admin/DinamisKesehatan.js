@@ -6,20 +6,20 @@ import {
     View
 } from 'react-native';
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
-const styleDinamis = require('./styles/StyleDinamis');
+const styleDinamis = require('../styles/StyleDinamis');
 
-export default class DinamisPendidikan extends React.Component {
+export default class DinamisKesehatan extends React.Component {
 
     _ShowMenu() {
         const arrMenu = [
             {
-                'menuName': 'Data Guru'
+                'menuName': 'Jumlah Ibu Hamil'
             },
             {
-                'menuName': 'Data Murid'
+                'menuName': 'Jumlah Keluarga Berencana'
             }
         ];
 
@@ -49,7 +49,7 @@ export default class DinamisPendidikan extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
-
+        
         return(
             <View 
                 style={{
@@ -60,7 +60,8 @@ export default class DinamisPendidikan extends React.Component {
 
                 <Header 
 					navigation={navigation} 
-					title='Dinamis Pendidikan'
+                    title='Dinamis Kesehatan'
+                    back={true}
 				/>
                 
                 <ScrollView>
