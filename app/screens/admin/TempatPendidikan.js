@@ -9,13 +9,13 @@ import {
     View,
 } from "react-native";
 
-import Banner from './common/Banner';
-import Header from './common/Header';
+import Banner from '../common/Banner';
+import Header from '../common/Header';
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 
-export default class TempatIbadah extends React.Component{
+export default class TempatPendidikan extends React.Component{
 
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ export default class TempatIbadah extends React.Component{
 				body: JSON.stringify({
                     appToken: global.appToken,
                     data: {
-                        categoryPid: 2
+                        categoryPid: 1
                     }
 				})
 			}).then((response) => response.json())
@@ -72,7 +72,7 @@ export default class TempatIbadah extends React.Component{
                 >
                     <View>
                         <Image
-                            source={ require('../../assets/images/masjid_darul_amal.jpg') }
+                            source={ require('../../../assets/images/pendidikan_sekolah.jpg') }
                             style={{
                                 width: dWidth * 0.3,
                                 height: dWidth * 0.3 * 0.6
@@ -87,7 +87,7 @@ export default class TempatIbadah extends React.Component{
                     >
                         <View>
                             <Text>
-                                Masjid Darul Amal
+                                Sekolah Menengah Bojonggenteng
                             </Text>
                         </View>
                         <View
@@ -105,7 +105,7 @@ export default class TempatIbadah extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Masjid terbesar di kecamatan Bojonggenteng
+                                Sekolah Menengah Bojonggenteng
                             </Text>
                         </View>
                     </View>
@@ -129,7 +129,8 @@ export default class TempatIbadah extends React.Component{
 
                 <Header 
 					navigation={navigation} 
-					title='Tempat Ibadah'
+					title='Tempat Pendidikan'
+                    back={true}
 				/>
 
                 <ScrollView
@@ -153,7 +154,7 @@ export default class TempatIbadah extends React.Component{
                                     fontWeight: 'bold'
                                 }}
                             >
-                                Masjid Darul Amal
+                                Sekolah Menengah Bojonggenteng
                             </Text>
                         </View>
 
@@ -162,7 +163,7 @@ export default class TempatIbadah extends React.Component{
                             }}
                         >
                             <Image
-                                source={ require('../../assets/images/masjid_darul_amal.jpg') }
+                                source={ require('../../../assets/images/pendidikan_sekolah.jpg') }
                                 style={{
                                     width: dWidth,
                                     height: dWidth * 0.6
@@ -182,7 +183,7 @@ export default class TempatIbadah extends React.Component{
                                     color: 'grey'
                                 }}
                             >
-                                Jl. Bojong, Blok XVI No. 33, RT 003 / RW 003 Kecamatan Bojonggenteng, Kabupaten Sukabumi, 199900
+                                Sekolah Menengah Bojonggenteng
                             </Text>
                         </View>
                     </View>
