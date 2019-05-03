@@ -40,7 +40,9 @@ export default class AdminLayanan extends React.Component {
 					appToken: global.appToken,
                     table: 'appLayanan',
                     data: {
-                        type: type
+                        type: type,
+                        page: '0',
+                        status: '2',
                     }
 				})
 			}).then((response) => response.json())
