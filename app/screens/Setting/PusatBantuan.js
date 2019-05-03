@@ -8,7 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import HeaderSetting from './HeaderSetting';
+import HeaderSetting from '../common/HeaderSetting';
 
 export default class PusatBantuan extends React.Component {
     render() {

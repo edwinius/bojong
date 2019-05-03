@@ -10,7 +10,7 @@ import {
     TextInput,
 } from 'react-native';
 
-import HeaderSetting from './HeaderSetting';
+import HeaderSetting from '../common/HeaderSetting';
 
 export default class SettingAkunDanID extends React.Component {
 
