@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    Alert,
+    AsyncStorage,
     Text,
     View,
     Platform,
@@ -11,11 +13,102 @@ import {
     TextInput
 } from 'react-native';
 
+import LoadingScreen from './common/LoadingScreen';
+
 import BackBtn from './common/BackBtn';
 
 export default class Elapor extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: true,
+            laporMsg: '',
+            userPid: '',
+            userToken: '',
+        }
+    }
+
+    async getToken() {
+		try {
+			const navigation = this.props.navigation;
+			let userPid = await AsyncStorage.getItem('userPid');
+            let userToken = await AsyncStorage.getItem('userToken');
+            let userAdmin = await AsyncStorage.getItem('userAdmin');
+            
+            if(this.mounted) {
+                this.setState({
+                    userPid: userPid,
+                    userToken: userToken,
+                    isLoading: false
+                });
+            }
+        } catch(error) {
+			console.log(error);
+		}
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+        this.getToken();
+	}
+	
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
+    _SubmitLapor = () => {
+        const { laporMsg, userPid } = this.state;
+        const navigation = this.props.navigation;
+
+        if(laporMsg != '') {
+            this.setState({
+                isLoading: true
+            });
+
+            fetch(`${global.api}add_data`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    appToken: global.appToken,
+                    table: 'laporan',
+                    data: {
+                        laporan_msg: laporMsg,
+                        user_pid: userPid
+                    }
+                })
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                //console.log(responseJson);
+
+                if(responseJson['status'] == '200') {
+                    if(this.mounted) {
+                        this.setState({
+                            isLoading: false,
+                            laporMsg: ''
+                        });
+                    }
+
+                    Alert.alert('Laporan telah berhasil dikirim. Mohon tunggu balasan dari kami');
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        } else {
+			Alert.alert('Mohon isi pesan laporan');
+		}
+    }
+
     render() {
+        if(this.state.isLoading) {
+			return(
+				<LoadingScreen />
+			);
+		}
 
         const navigation = this.props.navigation;
 
@@ -93,7 +186,8 @@ export default class Elapor extends React.Component {
                                     placeholder="Tulis laporan anda"
                                     placeholderTextColor="#cacaca"
                                     autoCapitalize="none"
-                                    onChangeText={this.handleLapor} 
+                                    onChangeText={ laporMsg => this.setState({ laporMsg })}
+                                    value={ this.state.laporMsg }
                                 />
 
                                 <TouchableOpacity
@@ -111,12 +205,15 @@ export default class Elapor extends React.Component {
                                         shadowOpacity: 0.35,
                                         elevation: 3,
                                     }}
-                                    onPress={
-                                        () => this.Kirim(this.state.lapor)
-                                    }>
-                                    <Text style={{
-                                        color: 'white'
-                                    }}>Kirim</Text>
+                                    onPress={ this._SubmitLapor }
+                                >
+                                    <Text 
+                                        style={{
+                                            color: 'white'
+                                        }}
+                                    >
+                                        Kirim
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
