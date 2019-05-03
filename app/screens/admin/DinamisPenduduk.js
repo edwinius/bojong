@@ -14,10 +14,17 @@ const styleDinamis = require('../styles/StyleDinamis');
 export default class DinamisPenduduk extends React.Component {
 
     _ShowMenu() {
+        const navigation = this.props.navigation;
+        
         const arrMenu = [
             {
-                'menuName': 'Penerima bantuan kemiskinan'
+                'menuName': 'Penerima bantuan kemiskinan',
+                'menuPage': 'DinamisPendudukKemiskinan'
             },
+            {
+                'menuName': 'Jumlah Penduduk per Kelamin per Desa',
+                'menuPage': 'DinamisPendudukKelamin'
+            }
         ];
 
         const contentMenu = arrMenu.map(function(menu, index) {
@@ -25,6 +32,7 @@ export default class DinamisPenduduk extends React.Component {
                 <TouchableOpacity
                     key={ index }
                     style={ styleDinamis.btnMenu }
+                    onPress={() => navigation.navigate(`${menu.menuPage}`)}
                 >
                     <View style={ styleDinamis.containerTxtMenu }>
                         <Text style={ styleDinamis.txtMenu }>

@@ -10,6 +10,7 @@ import TempatDetail from './screens/TempatDetail';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
+import LayananUpload from './screens/layanan/LayananUpload';
 import KtpPage from './screens/layanan/KtpPage';
 import KK from './screens/layanan/KK';
 import PageSuratPindah from './screens/layanan/PageSuratPindah';
@@ -48,6 +49,9 @@ import NewsDetail from './screens/NewsDetail';
 
 // Admin
 import AdminHome from './screens/admin/AdminHome';
+import AdminLayanan from './screens/admin/AdminLayanan';
+import AdminLayananList from './screens/admin/AdminLayananList';
+import AdminLayananFiles from './screens/admin/AdminLayananFiles';
 import DataPenduduk from './screens/admin/DataPenduduk';
 import TempatIbadah from './screens/admin/TempatIbadah';
 import TempatPariwisata from './screens/admin/TempatPariwisata';
@@ -56,6 +60,9 @@ import TempatPendidikan from './screens/admin/TempatPendidikan';
 
 // Menu Dinamis
 import DinamisPenduduk from './screens/admin/DinamisPenduduk';
+import DinamisPendudukKemiskinan from './screens/admin/DinamisPendudukKemiskinan';
+import DinamisPendudukKelamin from './screens/admin/DinamisPendudukKelamin';
+import DinamisPendudukKemiskinanDetail from './screens/admin/DinamisPendudukKemiskinanDetail';
 import DinamisKesehatan from './screens/admin/DinamisKesehatan';
 import DinamisPendidikan from './screens/admin/DinamisPendidikan';
 
@@ -169,6 +176,21 @@ const HomeScreen = createStackNavigator({
 	Home: {
 		screen: Home,
 	},
+	HomeDataPenduduk: {
+		screen: DataPenduduk
+	},
+	HomeTempatIbadah: {
+		screen: TempatIbadah
+	},
+	HomeTempatPariwisata: {
+		screen: TempatPariwisata
+	},
+	HomeTempatKesehatan: {
+		screen: TempatKesehatan
+	},
+	HomeTempatPendidikan: {
+		screen: TempatPendidikan
+	},
 	TempatDetail: {
 		screen: TempatDetail,
 	},
@@ -176,7 +198,7 @@ const HomeScreen = createStackNavigator({
 		screen: LayananPage
 	},
 	KtpPage: {
-		screen: KtpPage
+		screen: LayananUpload
 	},
 	KK: {
 		screen: KK
@@ -321,6 +343,15 @@ const AdminScreen = createStackNavigator({
 	AdminHome: {
 		screen: AdminHome,
 	},
+	AdminLayanan: {
+		screen: AdminLayanan
+	},
+	AdminLayananList: {
+		screen: AdminLayananList
+	},
+	AdminLayananFiles: {
+		screen: AdminLayananFiles
+	},
 	DataPenduduk: {
 		screen: DataPenduduk
 	},
@@ -338,6 +369,15 @@ const AdminScreen = createStackNavigator({
 	},
 	DinamisPenduduk: {
 		screen: DinamisPenduduk
+	},
+	DinamisPendudukKemiskinan: {
+		screen: DinamisPendudukKemiskinan
+	},
+	DinamisPendudukKemiskinanDetail: {
+		screen: DinamisPendudukKemiskinanDetail
+	},
+	DinamisPendudukKelamin: {
+		screen: DinamisPendudukKelamin
 	},
 	DinamisKesehatan: {
 		screen: DinamisKesehatan

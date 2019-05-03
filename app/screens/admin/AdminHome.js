@@ -112,6 +112,11 @@ export default class Home extends React.Component{
                 menuName: 'Pendidikan',
                 menuImg: require('../../../assets/icons/icon_pendidikan.png'),
                 menuScreen: 'DinamisPendidikan'
+            },
+            {
+                menuName: 'Layanan',
+                menuImg: require('../../../assets/icons/icon_layanan.png'),
+                menuScreen: 'AdminLayanan'
             }
         ];
 
@@ -163,9 +168,9 @@ export default class Home extends React.Component{
 	}
 
     render() {
-        
+        const navigation = this.props.navigation;
+
         return(
-            
             <View
                 style={{
                     flex: 1,
@@ -174,7 +179,6 @@ export default class Home extends React.Component{
             >
                 <View
                     style={{
-                        height: 40,
                         left: 0,
                         width: '100%',
                         position: 'absolute',
@@ -189,18 +193,44 @@ export default class Home extends React.Component{
 
                     <View
                         style={{
-                            backgroundColor: globalConst.COLOR.SAFEAREA
+                            backgroundColor: globalConst.COLOR.SAFEAREA,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingVertical: 10,
                         }}
                     >
-                        <Text
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('SignedInHome')}
                             style={{
-                                color: 'white',
-                                paddingVertical: 10,
                                 paddingHorizontal: 15,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
                         >
-                            Kecamatan Bojonggenteng
-                        </Text>
+                            <Text
+                                style={{
+                                    fontSize: 30,
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {"<"}
+                            </Text>
+                        </TouchableOpacity>
+
+                        <View>
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    paddingVertical: 0,
+                                    paddingHorizontal: 10,
+                                    fontSize: 18,
+                                }}
+                            >
+                                Kecamatan Bojonggenteng
+                            </Text>
+                        </View>
                     </View>
 
                     <View

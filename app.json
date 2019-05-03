@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.5",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,11 +25,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kecamatan.bojonggenteng",
-      "buildNumber": "1.0.5"
+      "buildNumber": "1.0.8"
     },
     "android": {
       "package": "com.kecamatan.bojonggenteng",
-			"versionCode": 5,
+			"versionCode": 8,
       "permissions": [
         "CAMERA"
       ]

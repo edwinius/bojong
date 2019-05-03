@@ -92,6 +92,68 @@ export default class Home extends React.Component {
         return (img);
     }
 
+    _ShowMenuStatis() {
+        const navigation = this.props.navigation;
+
+        const arrMenuStatis = [
+            {
+                menuName: 'Penduduk',
+                menuImg: require('../../assets/icons/icon_umum.png'),
+                menuScreen: 'HomeDataPenduduk'
+            },
+            {
+                menuName: 'Kesehatan',
+                menuImg: require('../../assets/icons/icon_kesehatan.png'),
+                menuScreen: 'HomeTempatKesehatan'
+            },
+            {
+                menuName: 'Pendidikan',
+                menuImg: require('../../assets/icons/icon_pendidikan.png'),
+                menuScreen: 'HomeTempatPendidikan'
+            },
+            {
+                menuName: 'Pariwisata',
+                menuImg: require('../../assets/icons/icon_pariwisata.png'),
+                menuScreen: 'HomeTempatPariwisata'
+            },
+            {
+                menuName: 'Tempat Ibadah',
+                menuImg: require('../../assets/icons/icon_ibadah.png'),
+                menuScreen: 'HomeTempatIbadah'
+            },
+            {
+                menuName: 'Pembangunan',
+                menuImg: require('../../assets/icons/icon_pembangunan.png'),
+                menuScreen: 'HomeTempatIbadah'
+            }
+        ];
+
+        const contentMenuStatis = arrMenuStatis.map(function(statis, index) {
+            return(
+                <TouchableOpacity
+                    key={ index }
+                    style={ styles.btnMenu }
+                    onPress={() => navigation.navigate(`${statis.menuScreen}`)}
+                >
+                    <View style={ styles.containerIconMenu }>
+                        <Image
+                            style={ styles.iconMenu } 
+                            source={ statis.menuImg }
+                            resizeMode='contain'
+                        />
+                    </View>
+                    <View style={ styles.containerTxtMenu }>
+                        <Text style={ styles.txtMenu }>
+                            { statis.menuName }
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            );
+        });
+
+        return contentMenuStatis;
+    }
+
     onScroll(event) {
         const scrollY = event.nativeEvent.contentOffset.y;
         let layoutHeight = event.nativeEvent.layoutMeasurement.height;
@@ -285,6 +347,17 @@ export default class Home extends React.Component {
                                     source={require('../../assets/tombol.png')}
                                 />
                             </TouchableOpacity>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                                paddingBottom: 20,
+                            }}
+                        >
+                            { this._ShowMenuStatis() }
                         </View>
 
                         <View
