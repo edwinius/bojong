@@ -78,8 +78,8 @@ export default class AdminLayanan extends React.Component {
     _ShowData() {
         const navigation = this.props.navigation;
 
-        if(this.state.data.length > 0) {
-            const content = this.state.data.map(function(v, i) {
+        if(this.state.data.row.length > 0) {
+            const content = this.state.data.row.map(function(v, i) {
                 return(
                     <TouchableOpacity
                         key={ i }
