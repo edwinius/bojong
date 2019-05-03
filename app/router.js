@@ -27,6 +27,16 @@ import IzinRame from './screens/layanan/IzinRame';
 // Import Inbox
 import InboxHome from './screens/InboxHome';
 
+// Setting
+import Setting from './screens/Setting/Setting';
+import SettingAkun from './screens/Setting/SettingAkun';
+import SettingID from './screens/Setting/SettingID';
+import SettingAkunDanID from './screens/Setting/SettingAkunDanID';
+import KebijakanPrivasi from './screens/Setting/KebijakanPrivasi';
+import PusatBantuan from './screens/Setting/PusatBantuan';
+import SyaratDanKetentuan from './screens/Setting/SyaratDanKetentuan';
+import Keluar from './screens/Setting/Keluar';
+
 // Import Profile
 import ProfileHome from './screens/ProfileHome';
 import ProfileUser from './screens/ProfileUser';
@@ -65,6 +75,30 @@ export const InboxContainer = createAppContainer(InboxScreen);
 const UserScreen = createStackNavigator({
 	ProfileUser: {
 		screen: ProfileUser,
+	},
+	Setting: {
+		screen: Setting,
+	},
+	SettingAkunDanID: {
+		screen: SettingAkunDanID,
+	},
+	SettingAkun: {
+		screen: SettingAkun,
+	},
+	SettingID: {
+		screen: SettingID
+	},
+	SyaratDanKetentuan: {
+		screen: SyaratDanKetentuan
+	},
+	KebijakanPrivasi: {
+		screen: KebijakanPrivasi
+	},
+	PusatBantuan: {
+		screen: PusatBantuan
+	},
+	Keluar: {
+		screen: Keluar
 	}
 }, {
 		headerMode: 'none',
@@ -139,7 +173,7 @@ const HomeScreen = createStackNavigator({
 		screen: TempatDetail,
 	},
 	LayananPage: {
-		screen: LayananPage,
+		screen: LayananPage
 	},
 	KtpPage: {
 		screen: KtpPage
