@@ -5,6 +5,7 @@ import {
     Platform,
     SafeAreaView,
     ScrollView,
+    StatusBar,
     TouchableOpacity,
     Image,
     Dimensions
@@ -17,6 +18,58 @@ const dWidth = dimensions.width;
 const bannerHeight = dWidth * 0.67;
 
 export default class NewsHome extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            berita: [],
+            isLoading: true,
+        }
+    }
+
+    async getToken() {
+		try {
+            const navigation = this.props.navigation;
+
+			// Fetch home data
+			fetch(`${global.api}fetch_data`,
+			{
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					appToken: global.appToken,
+                    table: 'berita-app-home',
+                    data: ''
+				})
+			}).then((response) => response.json())
+			.then((responseJson) => {
+                console.log(responseJson);
+                
+                if(responseJson['status'] == '200') {
+					if(this.mounted) {
+						this.setState({
+							isLoading: false,
+                            berita: responseJson['data']['berita']
+						});
+					}
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+			
+		} catch(error) {
+			console.log(error);
+		}
+    }
+
+    componentDidMount() {
+		this.mounted = true;
+		this.getToken();
+    }
 
     _BeritaBojong() {
         const navigation = this.props.navigation;
@@ -59,120 +112,159 @@ export default class NewsHome extends React.Component {
             }
         ];
 
-        const btn = buttons.map(function (item, index) {
-            return (
-                <TouchableOpacity
-                    key={index}
-                    style={{
-                        flexDirection: 'row',
-                        marginTop: 20,
-                        justifyContent: "center",
-                        height: 80
-                    }}
-                    onPress={() => navigation.navigate(`${item.btnPage}`)}
-                >
-                    <View
+        if(this.state.berita.length > 0) {
+            const btn = this.state.berita.map(function (item, index) {
+                return (
+                    <TouchableOpacity
+                        key={index}
                         style={{
-                            marginRight: 7
-                        }}>
-                        <Image
-                            style={{ width: 130, height: 80 }}
-                            source={item.btnImage}
-                        />
-                    </View>
-
-                    <View
-                        style={{
-                            padding: 5,
-                            width: 170,
-                            shadowColor: 'grey',
-                            shadowOffset: { width: 1.5, height: 1.5 },
-                            shadowRadius: 2,
-                            shadowOpacity: 0.35,
-                            elevation: 3,
-                            backgroundColor: 'white'
-                        }}>
-                        <Text
+                            flexDirection: 'row',
+                            marginTop: 20,
+                            justifyContent: "center",
+                            height: 80
+                        }}
+                        onPress={() => navigation.navigate('NewsDetail', 
+                        {
+                            beritaPid: item.berita_pid
+                        })}
+                    >
+                        <View
                             style={{
-                                fontSize: 13,
-                                color: "#444444"
-                            }}
-                        >
-                            {item.btnName}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        });
+                                marginRight: 7
+                            }}>
+                            <Image
+                                style={{ width: 130, height: 80 }}
+                                source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
+                            />
+                        </View>
 
-        return (btn);
+                        <View
+                            style={{
+                                padding: 5,
+                                width: 170,
+                                shadowColor: 'grey',
+                                shadowOffset: { width: 1.5, height: 1.5 },
+                                shadowRadius: 2,
+                                shadowOpacity: 0.35,
+                                elevation: 3,
+                                backgroundColor: 'white'
+                            }}>
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: "#444444"
+                                }}
+                            >
+                                { item.berita_title }
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )
+            });
+
+            return (btn);
+        } else {
+            return(<Text>NoData</Text>);
+        }
+    }
+
+    _ShowCarousel() {
+        let navigation = this.props.navigation;
+        
+        if(this.state.berita.length > 0) {
+            const contentBanner = this.state.berita.map(function (item, index) {
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => navigation.navigate('NewsDetail', 
+                        {
+                            beritaPid: item.berita_pid
+                        })}
+                    >
+                        <View>
+                            <Image
+                                style={{ 
+                                    width: dWidth, 
+                                    height: '100%' 
+                                }}
+                                source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
+                                resizeMode='contain'
+                            />
+                        </View>
+                    </TouchableOpacity>
+                );
+            });
+
+            return(contentBanner);
+        } else {
+            return(<Text>NoData</Text>);
+        }
     }
 
     render() {
-        const navigation = this.props.navigation
-        const bannerImages2 = [
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_bcl.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_agnez.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_us.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_rossa.png'),
-                btnPage: 'NewsDetail'
-            },
-        ];
+        const navigation = this.props.navigation;
 
-        const contentBanner = bannerImages2.map(function (item, index) {
-            return (
-                <TouchableOpacity
-                    key={index}
-                    onPress={() => navigation.navigate(`${item.btnPage}`)}
-                >
-                    <View>
-                        <Image
-                            style={{ width: dWidth, height: bannerHeight }}
-                            //source={{ uri: `${global.uri}assets/images/site/${item}.png`}}
-                            source={item.btnImage}
-                            resizeMode='contain'
-                        />
-                    </View>
-                </TouchableOpacity>
-            );
-        });
         return (
-            <View
+            <SafeAreaView
                 style={{
-                    flex: 1
+                    flex: 1,
+                    backgroundColor: 'rgb(52,73,100)',
+                    ...Platform.select({
+                        android: {
+                            paddingTop: 30
+                        }
+                    })
                 }}
             >
-                <SafeAreaView
-                    style={{
-                        ...Platform.select({
-                            android: {
-                                backgroundColor: 'black',
-                                height: 24,
-                            }
-                        })
-                    }}
-                >
-                </SafeAreaView>
+                <StatusBar barStyle="light-content" />
+
                 <View
                     style={{
-                        flexDirection: 'column',
-                        height: 185
+                        flex: 1,
+                        backgroundColor: 'white'
                     }}
                 >
                     <View
                         style={{
+                            flexDirection: 'column',
+                            height: 200
+                        }}
+                    >
+                        <View
+                            style={{
+                                paddingVertical: 16,
+                                paddingHorizontal: 25,
+                                backgroundColor: 'rgb(52,73,100)',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: 17,
+                                    color: 'white'
+                                }}
+                            >Berita HOT</Text>
+                        </View>
+
+                        <View style={{
+                            marginTop: 0,
+                        }}>
+                            <Carousel
+                                autoplay
+                                autoplayTimeout={4000}
+                                loop
+                                index={0}
+                                pageSize={dWidth}
+                            >
+                                {this._ShowCarousel()}
+                            </Carousel>
+                        </View>
+                    </View>
+
+                    <View
+                        style={{
                             marginHorizontal: 25,
-                            marginVertical: 16
+                            marginTop: 85,
                         }}
                     >
                         <Text
@@ -180,46 +272,20 @@ export default class NewsHome extends React.Component {
                                 fontWeight: "bold",
                                 fontSize: 17
                             }}
-                        >Berita HOT</Text>
+                        >Berita Harian</Text>
                     </View>
-                    <View style={{
-                        marginTop: -40,
-                    }}>
-                        <Carousel
-                            autoplay
-                            autoplayTimeout={4000}
-                            loop
-                            index={0}
-                            pageSize={dWidth}
-                        >
-                            {contentBanner}
-                        </Carousel>
-                    </View>
-                </View>
 
-                <View
-                    style={{
-                        marginHorizontal: 25,
-                        marginTop: 55
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontWeight: "bold",
-                            fontSize: 17
-                        }}
-                    >Berita Harian</Text>
+                    <ScrollView>
+                        <View
+                            style={{
+                                marginBottom: 15
+                            }}
+                        >
+                            {this._BeritaBojong()}
+                        </View>
+                    </ScrollView>
                 </View>
-                <ScrollView>
-                    <View
-                        style={{
-                            marginBottom: 15
-                        }}
-                    >
-                        {this._BeritaBojong()}
-                    </View>
-                </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }

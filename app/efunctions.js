@@ -38,6 +38,75 @@ export const validateEmail = (text) => {
 	}
 }
 
+export const parseReligion = (data) => {
+	switch(data) {
+		case '1':
+			data = 'Islam';
+			break;
+		case '2':
+			data = 'Katholik';
+			break;
+		case '3':
+			data = 'Protestan';
+			break;
+		case '4':
+			data = 'Hindu';
+			break;
+		case '5':
+			data = 'Budha';
+			break;
+	}
+
+	return data;
+}
+
+export const parseBloodType = (data) => {
+	switch(data) {
+		case '0':
+			data = 'NN';
+			break;
+		case '1':
+			data = 'A';
+			break;
+		case '2':
+			data = 'AB';
+			break;
+		case '3':
+			data = 'B';
+			break;
+		case '4':
+			data = 'O';
+			break;
+	}
+
+	return data;
+}
+
+export const parseMarriedStatus = (data) => {
+	switch(data) {
+		case '0':
+			data = 'Belum Kawin';
+			break;
+		case '1':
+			data = 'Sudah Kawin';
+			break;
+		case '2':
+			data = 'Cerai Mati';
+			break;
+		case '3':
+			data = 'Cerai Hidup';
+			break;
+		case '4':
+			data = 'Kawin Tercatat';
+			break;
+		case '5':
+			data = 'Kawin Belum Tercatat';
+			break;
+	}
+
+	return data;
+}
+
 /*
 export const i18n = (lang, screen, str) => {
 	let word = '';

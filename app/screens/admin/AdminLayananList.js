@@ -93,11 +93,30 @@ export default class AdminLayanan extends React.Component {
                             borderColor: '#e0e0e0',
                             paddingHorizontal: 22,
                             paddingVertical: 12,
+                            flexDirection: 'row',
                         }}
                     >
-                        <Text>
-                            { parseDate(v.layanan_datetime) }
-                        </Text>
+                        <View
+                            style={{
+                                borderRightWidth: 1,
+                                borderColor: '#e0e0e0',
+                                paddingRight: 10,
+                            }}
+                        >
+                            <Text>
+                                { parseDate(v.layanan_datetime) }
+                            </Text>
+                        </View>
+
+                        <View
+                            style={{
+                                paddingHorizontal: 10
+                            }}
+                        >
+                            <Text>
+                                { v.penduduk_first_name }
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 );
             });

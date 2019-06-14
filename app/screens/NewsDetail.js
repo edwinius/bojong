@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     Text,
     View,
     Platform,
@@ -11,23 +12,82 @@ import {
     TextInput
 } from 'react-native';
 
-import HeaderBerita from './common/HeaderBerita'
+import HeaderBerita from './common/HeaderBerita';
+import LoadingScreen from './common/LoadingScreen';
 
 export default class NewsDetail extends React.Component {
 
-    state = {
-        lapor: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: true,
+            data: [],
+            lapor: '',
+        }
     }
+
     handleLapor = (text) => {
         this.setState({ lapor: text })
     }
+
     kirim = (lapor) => {
-        alert('Komentar anda terikim.')
+        Alert.alert('Komentar anda terikim.');
+    }
+
+    async getToken() {
+		try {
+            const navigation = this.props.navigation;
+            let pid = navigation.state.params.beritaPid;
+
+			// Fetch home data
+			fetch(`${global.api}fetch_data`,
+			{
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					appToken: global.appToken,
+                    table: 'detail_berita',
+                    data: {
+                        'pid': pid
+                    }
+				})
+			}).then((response) => response.json())
+			.then((responseJson) => {
+                console.log(responseJson);
+                
+                if(responseJson['status'] == '200') {
+					if(this.mounted) {
+						this.setState({
+							isLoading: false,
+                            data: responseJson['data']['berita']
+						});
+					}
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+			
+		} catch(error) {
+			console.log(error);
+		}
+    }
+
+    componentDidMount() {
+		this.mounted = true;
+		this.getToken();
     }
 
     render() {
+        if(this.state.isLoading) {
+			return( <LoadingScreen /> );
+        }
 
-        const navigation = this.props.navigation
+        const navigation = this.props.navigation;
+        let berita = this.state.data[0];
 
         return (
             <View
@@ -46,10 +106,16 @@ export default class NewsDetail extends React.Component {
                     }}
                 >
                 </SafeAreaView>
-                <View>
+
+                <View
+                    style={{
+                        backgroundColor: 'rgb(52,73,100)',
+                    }}
+                >
                     <HeaderBerita
                         title="MyBoget News"
-                        navigation={navigation} />
+                        navigation={navigation} 
+                    />
                 </View>
 
                 <ScrollView
@@ -71,7 +137,9 @@ export default class NewsDetail extends React.Component {
                                     fontWeight: "bold",
                                     fontSize: 21
                                 }}
-                            >11 Curhatan Seputar Dunia Per-Ojolan, dari Kisah Baper Hingga Bikin Mewek</Text>
+                            >
+                                { berita.berita_title }
+                            </Text>
                         </View>
 
                         <View
@@ -118,7 +186,7 @@ export default class NewsDetail extends React.Component {
                                     fontSize: 12,
                                     color: '#888888'
                                 }}
-                            >Minggu, 31/03/2019</Text>
+                            >Minggu, { berita.berita_date }</Text>
                         </View>
                     </View>
 
@@ -132,7 +200,9 @@ export default class NewsDetail extends React.Component {
                                 width: '100%',
                                 height: 190
                             }}
-                            source={require('../../assets/kolom_berita/berita_ojol.jpeg')} />
+                            source={{ uri: `${global.s3}berita/${berita.berita_pid}/${berita.berita_img}`}}
+                            //source={require('../../assets/kolom_berita/berita_ojol.jpeg')} 
+                        />
                     </View>
 
                     <View
@@ -148,13 +218,9 @@ export default class NewsDetail extends React.Component {
                                 fontSize: 17,
                                 lineHeight: 24
                             }}
-                        >Aplikasi ojek online memang mempermudah banyak orang, khususnya mereka yang tidak punya kendaraan dan tidak bisa naik motor. Sejak ada ojek online juga ada banyak sekali cerita haru, sedih, serta ngakak baik dari driver ataupun penumpang. Cerita-cerita ini juga dibagikan oleh akun @dramaojol.id dan timeline Twitter.
-                        {'\n'}{'\n'}
-                            Nah, di antara cerita-cerita lucu yang bertebaran di media sosial, sekarang Boombastis.com akan berbagi curhatan galau, kesal, serta kelakuan para penumpang yang bikin ngakak. Adakah nih di antara kalian semua yang suka kebablasan curhat panjang lebar seperti ini?
-                        {'\n'}{'\n'}
-                            Ini kisah yang pertama, sambil baca sambil dihayati yaa..
-                        {'\n'}{'\n'}
-                            Duh, emang ada-ada saja ya para netizen Indonesia ini. Tapi enggak masalah sih selama abang gojeknya juga mau mendengarkan, kali aja bisa memberi solusi kan ya~</Text>
+                        >
+                            { berita.berita_text }
+                        </Text>
                     </View>
 
                     <View
@@ -220,13 +286,14 @@ export default class NewsDetail extends React.Component {
                     <View
                         style={{
                             backgroundColor: '#e5e5e5',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            paddingVertical: 10,
                         }}
                     >
                         <View
                             style={{
                                 marginHorizontal: 14,
-                                marginTop: 20,
+                                marginVertical: 10,
                                 backgroundColor: 'white',
                                 padding: 9
                             }}
@@ -237,10 +304,12 @@ export default class NewsDetail extends React.Component {
                                     fontSize: 15
                                 }}
                             >
-                                Kevin Suratmo
+                                Belum ada Komentar
                             </Text>
                             <Text>
+                                {/* Isi komentar
                                 Semoga Gojek dan Grab bisa masuk ke kecamatan bojonggenteng juga, agar saya bisa gabung menjadi driver dan menafkahi keluarga saya..
+                                */}
                             </Text>
                             <Text
                                 style={{
@@ -249,38 +318,10 @@ export default class NewsDetail extends React.Component {
                                     marginTop: 4,
                                 }}
                             >
-                                1 jam lalu
+                                {/* 1 jam lalu */}
                             </Text>
                         </View>
-                        <View
-                            style={{
-                                marginHorizontal: 14,
-                                marginVertical: 24,
-                                backgroundColor: 'white',
-                                padding: 9
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: 15
-                                }}
-                            >
-                                Lisna Ningsih
-                            </Text>
-                            <Text>
-                                hahaha lucu banget deh.. ada-ada aja ya cerita kehidupan driver2 ojol ini..
-                            </Text>
-                            <Text
-                                style={{
-                                    fontSize: 11,
-                                    color: "#999999",
-                                    marginTop: 4
-                                }}
-                            >
-                                2 jam lalu
-                            </Text>
-                        </View>
+                        
                     </View>
                 </ScrollView>
             </View>
