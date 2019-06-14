@@ -65,8 +65,8 @@ export default class SignUp extends React.Component {
                     //console.log(responseJson);
 
                     if(responseJson['status'] == '200') {
-                        const pid = responseJson['user_pid'];
-                        let admin = responseJson['user_admin'];
+                        const pid = JSON.stringify(responseJson['user_pid']);
+                        let admin = JSON.stringify(responseJson['user_admin']);
 
                         AsyncStorage.setItem('userPid', pid);
                         AsyncStorage.setItem('userAdmin', admin);

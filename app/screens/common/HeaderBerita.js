@@ -39,12 +39,13 @@ export default class HeaderBerita extends React.Component {
                         style={{
                             width: 25,
                             height: 25
-                        }} />
+                    }} />
                 </View>
 
                 <View
                     style={{
-                        flex: 0.4
+                        flex: 0.4,
+                        backgroundColor: 'red'
                     }}
                 >
                     <Text
@@ -54,7 +55,7 @@ export default class HeaderBerita extends React.Component {
                             fontWeight: 'bold'
                         }}
                     >
-                        {this.props.title}
+                        MyBoget News
                     </Text>
                 </View>
 

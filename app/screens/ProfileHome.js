@@ -59,7 +59,7 @@ export default class ProfileHome extends React.Component{
     _LoadScreen() {
         const navigation = this.props.navigation;
         
-        if(this.state.userPid != '' && this.state.userToken != '') {
+        if(this.state.userPid != '' && this.state.userPid != null && this.state.userToken != '') {
             return(<ProfileUser navigation={navigation} />);
         } else {
             return(<SignIn navigation={navigation} />);

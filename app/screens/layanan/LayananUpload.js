@@ -2,6 +2,7 @@ import React from 'react';
 import {
     ActionSheetIOS,
     Alert,
+    AsyncStorage,
     Text,
     View,
     Platform,
@@ -14,6 +15,7 @@ import {
 import { ImagePicker } from 'expo';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 
+import LoadingScreen from '../common/LoadingScreen';
 import LayananForm from '../common/LayananForm';
 import BackBtn from '../common/BackBtn';
 
@@ -36,12 +38,41 @@ class LayananUploadApp extends React.Component {
     constructor(props) {
 		super(props)
 		this.state = {
-            isLoading: true,
+            isLoading: false,
             imageSource: '',
             imageUri: '',
             imageName: '',
-            imageType: ''
+            imageType: '',
+            arrImg: [],
+            userPid: '',
+            userToken: '',
+            layananType: '',
         }
+    }
+
+    async getToken() {
+		try {
+			const navigation = this.props.navigation;
+			let userPid = await AsyncStorage.getItem('userPid');
+            let userToken = await AsyncStorage.getItem('userToken');
+
+            // If not logged set userPid & userToken to 0
+			if(userPid == null || userPid == '' || userToken == null || userToken == '') {
+				userPid = '',
+				userToken = ''
+            }
+            
+            this.setState({
+                userPid: userPid,
+                userToken: userToken
+            });
+        } catch(error) {
+			console.log(error);
+		}
+    }
+    
+    componentWillUnmount() {
+		this.mounted = false;
     }
 
     async getPermissionAsync() {
@@ -79,36 +110,63 @@ class LayananUploadApp extends React.Component {
     componentDidMount() {
 		this.getPermissionAsync();
         this.getPermissionCamera();
+		this.mounted = true;
+		this.getToken();
     }
 
     _SubmitLayanan = () => {
-        const { imageSource, imageUri, imageName, imageType } = this.state;
+        const { arrImg, userPid } = this.state;
         const navigation = this.props.navigation;
+        
+        //console.log(this.state);
+        this.setState({
+            isLoading: true
+        });
 
         // Upload Image
         let formData = new FormData();
-        formData.append('file_ktp', {
+
+        /*formData.append('file_ktp', {
             uri: (Platform.OS === 'android' ? 'file://' : '') + imageUri,
             type: imageType,
             name: imageName,
             tmp_name: (Platform.OS === 'android' ? 'file://' : '') + imageUri
-        });
+        });*/
+
+        if(arrImg.length > 0) {
+            arrImg.map(function(v, i) {
+                formData.append('file_' + v.imageFile, {
+                    uri: (Platform.OS === 'android' ? 'file://' : '') + v.imageUri,
+                    type: v.imageType,
+                    name: v.imageName,
+                    tmp_name: (Platform.OS === 'android' ? 'file://' : '') + v.imageUri
+                });
+            });
+        } else {
+            Alert.alert('Mohon Upload File');
+        }
+
+        formData.append('user_pid', userPid);
+        formData.append('layanan_type', '1');
 
         fetch(`${global.api}data_controller/test_layanan`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             },
             body: formData,
-            header: {
-                'content-type': 'multipart/form-data'
-            }
+            /*header: {
+                'Content-Type': 'multipart/form-data'
+            }*/
         }).then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson);
             //console.log(this.state);
             console.log(formData);
+
+            Alert.alert('Pengajuan anda telah berhasil di submit. Silahkan menunggu review dari kami. Terima kasih :)');
+            navigation.goBack(null);
         });
     }
 
@@ -118,27 +176,27 @@ class LayananUploadApp extends React.Component {
         const buttons = [
             {
                 btnName: 'Upload Fotocopy Kartu Keluarga',
-                btnPage: 'KtpPage'
+                btnFile: 'kk'
             },
             {
                 btnName: 'Upload Fotocopy Buku Nikah/Akta Perkawinan bagi penduduk yang belum berumur 17 tahun, tetapi pernah kawin atau sudah kawin',
-                btnPage: 'KtpPage'
+                btnFile: 'buku_nikah'
             },
             {
                 btnName: 'Upload Fotocopy Akta Kelahiran',
-                btnPage: 'KtpPage'
+                btnFile: 'akta_lahir'
             },
             {
                 btnName: 'Bagi pemohon yang mengajukan perubahan biodata penduduk melampirkan FC Surat Bukti / Keterangan peristiwa penting atau kependudukan yang dialami',
-                btnPage: 'KtpPage'
+                btnFile: 'surat_keterangan'
             },
             {
                 btnName: 'Bagi orang asing tinggal tetap, mohon upload FC KITAP',
-                btnPage: 'KtpPage'
+                btnFile: 'kitap'
             },
             {
                 btnName: 'Bagi orang asing tinggal tetap, mohon upload FC SKTT',
-                btnPage: 'KtpPage'
+                btnFile: 'sktt'
             }
         ];
 
@@ -175,7 +233,7 @@ class LayananUploadApp extends React.Component {
                             textAlign: 'center',
                             marginBottom: 10
                         }}
-                        onPress={that._ShowActionSheet}
+                        onPress={ () => that._ShowActionSheet(item.btnFile)}
                     >
                         <Text
                             style={{
@@ -194,7 +252,7 @@ class LayananUploadApp extends React.Component {
         return (btn);
     }
 
-    _PickImage = async() => {
+    _PickImage = async(file) => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			allowsEditing: true,
 			aspect: [4, 4]
@@ -209,17 +267,31 @@ class LayananUploadApp extends React.Component {
 			let match = /\.(\w+)$/.exec(filename);
 			let type = match ? `image/${match[1]}` : `image`;
 			
-			let source = { uri: result.uri };
-			this.setState({ 
+            let source = { uri: result.uri };
+            
+            let objImg = {
+                imageFile: file,
+                imageSource: source,
+				imageUri: localUri,
+				imageName: filename,
+				imageType: type
+            }
+
+            let joined = this.state.arrImg.concat(objImg);
+            this.setState({
+                arrImg: joined
+            });
+
+			{/*this.setState({ 
 				imageSource: source,
 				imageUri: localUri,
 				imageName: filename,
 				imageType: type
-			});
+			});*/}
 		}
 	}
 	
-	_PickCamera = async() => {
+	_PickCamera = async(file) => {
 		let result = await ImagePicker.launchCameraAsync({
 			allowsEditing: true,
 			aspect: [4, 4]
@@ -234,17 +306,31 @@ class LayananUploadApp extends React.Component {
 			let match = /\.(\w+)$/.exec(filename);
 			let type = match ? `image/${match[1]}` : `image`;
 			
-			let source = { uri: result.uri };
-			this.setState({ 
+            let source = { uri: result.uri };
+            
+            let objImg = {
+                imageFile: file,
+                imageSource: source,
+				imageUri: localUri,
+				imageName: filename,
+				imageType: type
+            }
+
+            let joined = this.state.arrImg.concat(objImg);
+            this.setState({
+                arrImg: joined
+            });
+
+			{/*this.setState({ 
 				imageSource: source,
 				imageUri: localUri,
 				imageName: filename,
 				imageType: type
-			});
+			});*/}
 		}
 	}
 	
-	_ShowActionSheet = () => {
+	_ShowActionSheet = (file) => {
 		if(Platform.OS === 'ios') {
 			ActionSheetIOS.showActionSheetWithOptions({
 				options: ['Cancel', 'Take Photo', 'Choose From Gallery'],
@@ -252,9 +338,9 @@ class LayananUploadApp extends React.Component {
 			},
 			(buttonIndex) => {
 				if(buttonIndex === 1) {
-					this._PickCamera();
+					this._PickCamera(file);
 				} else if (buttonIndex === 2) { 
-					this._PickImage();
+					this._PickImage(file);
 				}
 			});
 		} else if(Platform.OS === 'android') {
@@ -267,16 +353,21 @@ class LayananUploadApp extends React.Component {
 			},
 			(buttonIndex) => {
 				if(buttonIndex === 0) {
-					this._PickImage();
+					this._PickImage(file);
 				} else if (buttonIndex === 1) { 
-					this._PickCamera();
+					this._PickCamera(file);
 				}
 			});
 		}
     }
 
     render() {
-
+        if(this.state.isLoading) {
+			return(
+				<LoadingScreen />
+			);
+        }
+        
         const navigation = this.props.navigation;
 
         return (

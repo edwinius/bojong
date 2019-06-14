@@ -43,6 +43,7 @@ import AdminLayanan from './screens/admin/AdminLayanan';
 import AdminLayananList from './screens/admin/AdminLayananList';
 import AdminLayananFiles from './screens/admin/AdminLayananFiles';
 import DataPenduduk from './screens/admin/DataPenduduk';
+import DetailPenduduk from './screens/admin/DetailPenduduk';
 import TempatIbadah from './screens/admin/TempatIbadah';
 import TempatPariwisata from './screens/admin/TempatPariwisata';
 import TempatKesehatan from './screens/admin/TempatKesehatan';
@@ -321,6 +322,9 @@ const AdminScreen = createStackNavigator({
 	DataPenduduk: {
 		screen: DataPenduduk
 	},
+	DetailPenduduk: {
+		screen: DetailPenduduk
+	},
 	TempatIbadah: {
 		screen: TempatIbadah
 	},
@@ -352,8 +356,8 @@ const AdminScreen = createStackNavigator({
 		screen: DinamisPendidikan
 	}
 }, {
-		headerMode: 'none',
-	});
+	headerMode: 'none',
+});
 
 export const AdminContainer = createAppContainer(AdminScreen);
 
