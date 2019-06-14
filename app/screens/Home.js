@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    AsyncStorage,
     Dimensions,
     Image,
     Platform,
@@ -14,6 +15,8 @@ import {
 } from "react-native";
 import Carousel from 'react-native-banner-carousel';
 
+import LoadingScreen from './common/LoadingScreen';
+
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 const bannerHeight = dWidth * 0.67;
@@ -26,7 +29,52 @@ export default class Home extends React.Component {
         this.state = {
             imageOpacity: 0,
             contentSize: 0,
+            berita: [],
+            isLoading: true,
         }
+    }
+
+    async getToken() {
+        try {
+            const navigation = this.props.navigation;
+
+            // Fetch home data
+            fetch(`${global.api}fetch_data`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        appToken: global.appToken,
+                        table: 'berita-app-home',
+                        data: ''
+                    })
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+
+                    if (responseJson['status'] == '200') {
+                        if (this.mounted) {
+                            this.setState({
+                                isLoading: false,
+                                berita: responseJson['data']['berita']
+                            });
+                        }
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+        this.getToken();
     }
 
     _ShowHomePariwisata() {
@@ -175,44 +223,49 @@ export default class Home extends React.Component {
         }
     }
 
-    render() {
-        const navigation = this.props.navigation;
-        const bannerImages2 = [
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_bcl.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_agnez.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_us.png'),
-                btnPage: 'NewsDetail'
-            },
-            {
-                btnImage: require('../../assets/kolom_berita/berita_hot/hot_rossa.png'),
-                btnPage: 'NewsDetail'
-            },
-        ];
+    _ShowBerita() {
+        let navigation = this.props.navigation;
 
-        const contentBanner = bannerImages2.map(function (item, index) {
+        if (this.state.berita.length > 0) {
+            const contentBanner = this.state.berita.map(function (item, index) {
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => navigation.navigate('NewsDetail',
+                            {
+                                beritaPid: item.berita_pid
+                            })}
+                    >
+                        <View
+                        >
+                            <Image
+                                //style={{ width: dWidth, height: bannerHeight }}
+                                style={{
+                                    width: dWidth,
+                                    height: '100%',
+                                }}
+                                source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}` }}
+                            //source={item.berita_img}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                );
+            });
+
+            return (contentBanner);
+        } else {
             return (
-                <TouchableOpacity
-                    key={index}
-                    onPress={() => navigation.navigate(`${item.btnPage}`)}
-                >
-                    <View>
-                        <Image
-                            style={{ width: dWidth, height: bannerHeight }}
-                            //source={{ uri: `${global.uri}assets/images/site/${item}.png`}}
-                            source={item.btnImage}
-                            resizeMode='contain'
-                        />
-                    </View>
-                </TouchableOpacity>
+                <Text>NoData</Text>
             );
-        });
+        }
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (<LoadingScreen />);
+        }
+
+        const navigation = this.props.navigation;
 
         return (
             <SafeAreaView
@@ -244,7 +297,7 @@ export default class Home extends React.Component {
                         <View
                             style={{
                                 backgroundColor: 'white',
-                                height: 185,
+                                height: 200,
                                 width: '100%',
                             }}
                         >
@@ -283,10 +336,10 @@ export default class Home extends React.Component {
                                 </View>
                             </View>
 
-                            <View
-                                style={{
-                                    marginTop: -30
-                                }}>
+                            <View style={{
+                                marginTop: 0,
+                                height: '100%',
+                            }}>
                                 <Carousel
                                     autoplay
                                     autoplayTimeout={4500}
@@ -294,7 +347,7 @@ export default class Home extends React.Component {
                                     index={0}
                                     pageSize={dWidth}
                                 >
-                                    {contentBanner}
+                                    {this._ShowBerita()}
                                 </Carousel>
                             </View>
                         </View>
