@@ -7,6 +7,7 @@ import Home from './screens/Home';
 import Elapor from './screens/Elapor';
 import NewsHome from './screens/NewsHome';
 import TempatDetail from './screens/TempatDetail';
+import Galeri from './screens/Galeri';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
@@ -156,6 +157,18 @@ const ElaporScreen = createStackNavigator({
 
 export const ElaporContainer = createAppContainer(ElaporScreen);
 
+// Galeri
+const GaleriScreen = createStackNavigator({
+	Galeri: {
+		screen: Galeri,
+	},
+}, {
+		headerMode: 'none',
+		mode: 'modal',
+	});
+
+export const GaleriContainer = createAppContainer(GaleriScreen);
+
 // NewsHome
 const NewsScreen = createStackNavigator({
 	NewsHome: {
@@ -263,7 +276,7 @@ const SignedInHome = createBottomTabNavigator({
 		screen: NewsContainer,
 		gesturesEnabled: false,
 		navigationOptions: {
-			tabBarLabel: 'Berita  ',
+			tabBarLabel: 'Berita',
 			tabBarIcon: () =>
 				<Image
 					source={require('../assets/icons/news_black.png')}
@@ -274,17 +287,17 @@ const SignedInHome = createBottomTabNavigator({
 				/>
 		}
 	},
-	Elapor: {
-		screen: ElaporContainer,
+	Galeri: {
+		screen: GaleriContainer,
 		gesturesEnabled: false,
 		navigationOptions: {
-			tabBarLabel: 'Lapor',
+			tabBarLabel: 'Galeri',
 			tabBarIcon: () =>
 				<Image
-					source={require('../assets/icons/lapor_black.png')}
+					source={require('../assets/icons/galeri_black.png')}
 					style={{
-						width: 30,
-						height: 30,
+						width: 29,
+						height: 25,
 					}}
 				/>
 		}

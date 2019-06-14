@@ -128,23 +128,23 @@ export default class Home extends React.Component {
             }
         ];
 
-        const contentMenuStatis = arrMenuStatis.map(function(statis, index) {
-            return(
+        const contentMenuStatis = arrMenuStatis.map(function (statis, index) {
+            return (
                 <TouchableOpacity
-                    key={ index }
-                    style={ styles.btnMenu }
+                    key={index}
+                    style={styles.btnMenu}
                     onPress={() => navigation.navigate(`${statis.menuScreen}`)}
                 >
-                    <View style={ styles.containerIconMenu }>
+                    <View style={styles.containerIconMenu}>
                         <Image
-                            style={ styles.iconMenu } 
-                            source={ statis.menuImg }
+                            style={styles.iconMenu}
+                            source={statis.menuImg}
                             resizeMode='contain'
                         />
                     </View>
-                    <View style={ styles.containerTxtMenu }>
-                        <Text style={ styles.txtMenu }>
-                            { statis.menuName }
+                    <View style={styles.containerTxtMenu}>
+                        <Text style={styles.txtMenu}>
+                            {statis.menuName}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -251,9 +251,11 @@ export default class Home extends React.Component {
                             <View
                                 style={{
                                     paddingHorizontal: 25,
-                                    paddingVertical: 10,
+                                    paddingVertical: 16,
                                     backgroundColor: 'rgb(52,73,100)',
-                                    width: '100%'
+                                    width: '100%',
+                                    flexDirection: "row",
+                                    alignItems: "center"
                                 }}
                             >
                                 <Text
@@ -262,11 +264,29 @@ export default class Home extends React.Component {
                                         fontSize: 17,
                                         color: "white"
                                     }}
-                                >Berita HOT!</Text>
+                                >My Boget Apps</Text>
+                                <View>
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate('Elapor')}
+                                        style={{
+                                            marginLeft: 170
+                                        }}
+                                    >
+                                        <Image
+                                            source={require('../../assets/icons/lapor_white.png')}
+                                            style={{
+                                                width: 24,
+                                                height: 21,
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={{
-                                marginTop: -40
-                            }}>
+
+                            <View
+                                style={{
+                                    marginTop: -30
+                                }}>
                                 <Carousel
                                     autoplay
                                     autoplayTimeout={4500}
@@ -281,52 +301,14 @@ export default class Home extends React.Component {
 
                         <View
                             style={{
-                                borderWidth: 0.3,
-                                marginTop: 50,
-                                marginHorizontal: 40,
-                                paddingVertical: 10,
-                                shadowColor: 'grey',
-                                shadowOffset: { width: 1.5, height: 1.5 },
-                                shadowRadius: 2,
-                                shadowOpacity: 0.35,
-                                elevation: 3,
-                                backgroundColor: 'white',
-                                borderRadius: 20,
-                                flex: 1,
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                                paddingBottom: 20,
+                                marginTop: 70
                             }}
                         >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    paddingVertical: 6
-                                }}
-                            >
-                                <Image
-                                    source={require('../../assets/logo_bojong.png')}
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                    }}
-                                />
-                            </View>
-
-                            <View
-                                style={{
-                                    paddingTop: 4
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        textAlign: 'center',
-                                        fontSize: 14,
-                                        color: '#444444'
-                                    }}
-                                >Selamat datang di Aplikasi{'\n'} Kecamatan Bojonggenteng
-                                </Text>
-                            </View>
+                            {this._ShowMenuStatis()}
                         </View>
 
                         <View
@@ -347,17 +329,6 @@ export default class Home extends React.Component {
                                     source={require('../../assets/tombol.png')}
                                 />
                             </TouchableOpacity>
-                        </View>
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                flexWrap: 'wrap',
-                                justifyContent: 'center',
-                                paddingBottom: 20,
-                            }}
-                        >
-                            { this._ShowMenuStatis() }
                         </View>
 
                         <View
