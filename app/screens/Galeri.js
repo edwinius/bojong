@@ -10,7 +10,8 @@ import {
     StatusBar,
     Image,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Dimensions
 } from 'react-native';
 
 import LoadingScreen from './common/LoadingScreen';
@@ -18,6 +19,60 @@ import LoadingScreen from './common/LoadingScreen';
 import BackBtn from './common/BackBtn';
 
 export default class Galeri extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            galeriRow: [],
+            galeriColumn: [],
+            isLoading: true,
+        }
+    }
+
+    async getToken() {
+        try {
+            const navigation = this.props.navigation;
+
+            // Fetch home data
+            fetch(`${global.api}fetch_data`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        appToken: global.appToken,
+                        table: 'app-galeri-home',
+                        data: ''
+                    })
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+
+                    if (responseJson['status'] == '200') {
+                        if (this.mounted) {
+                            this.setState({
+                                isLoading: false,
+                                galeriRow: responseJson['data']['galeriRow'],
+                                galeriColumn: responseJson['data']['galeriColumn']
+                            });
+                        }
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+        this.getToken();
+    }
 
     _HorizontalScroll() {
         const navigation = this.props.navigation;
