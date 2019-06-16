@@ -8,6 +8,7 @@ import Elapor from './screens/Elapor';
 import NewsHome from './screens/NewsHome';
 import TempatDetail from './screens/TempatDetail';
 import Galeri from './screens/Galeri';
+import GaleriDetail from './screens/GaleriDetail';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
@@ -163,6 +164,9 @@ const GaleriScreen = createStackNavigator({
 	Galeri: {
 		screen: Galeri,
 	},
+	GaleriDetail: {
+		screen: GaleriDetail,
+	}
 }, {
 		headerMode: 'none',
 		mode: 'modal',
@@ -250,6 +254,9 @@ const HomeScreen = createStackNavigator({
 	IzinRame: {
 		screen: IzinRame
 	},
+	Elapor: {
+		screen: ElaporContainer
+	}
 }, {
 		headerMode: 'none',
 	});
@@ -403,8 +410,8 @@ const AdminScreen = createStackNavigator({
 		screen: DinamisPendidikan
 	}
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const AdminContainer = createAppContainer(AdminScreen);
 

@@ -39,13 +39,12 @@ export default class HeaderBerita extends React.Component {
                         style={{
                             width: 25,
                             height: 25
-                    }} />
+                        }} />
                 </View>
 
                 <View
                     style={{
                         flex: 0.4,
-                        backgroundColor: 'red'
                     }}
                 >
                     <Text

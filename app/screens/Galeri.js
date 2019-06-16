@@ -11,12 +11,16 @@ import {
     Image,
     TouchableOpacity,
     TextInput,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 
 import LoadingScreen from './common/LoadingScreen';
 
 import BackBtn from './common/BackBtn';
+
+const dimensions = Dimensions.get('window');
+const dWidth = dimensions.width;
+
 
 export default class Galeri extends React.Component {
 
@@ -27,6 +31,7 @@ export default class Galeri extends React.Component {
             galeriRow: [],
             galeriColumn: [],
             isLoading: true,
+            search: "",
         }
     }
 
@@ -77,21 +82,103 @@ export default class Galeri extends React.Component {
     _HorizontalScroll() {
         const navigation = this.props.navigation;
 
-        const buttons = [
-            "1", "2"
-        ];
-        const btn = buttons.map
+        const btn = this.state.galeriRow.map
             (function (item, index) {
                 return (
                     <TouchableOpacity
                         key={index}
                         style={{
-                            backgroundColor: "yellow",
-                            width: 50,
-                            height: 80
+                            width: 190,
+                            height: 160
                         }}
+                        onPress={() => navigation.navigate('GaleriDetail',
+                            {
+                                pid: item.galeri_album_pid
+                            }
+                        )}
                     >
+                        <View
+                            style={{
+                                marginHorizontal: 5,
+                                paddingHorizontal: 10,
+                                paddingTop: 8
+                            }}
+                        >
+                            <Image
+                                style={{ width: 150, height: 100 }}
+                                source={{ uri: `${global.s3}galeri/${item.galeri_album_pid}/${item.galeri_img}` }}
+                            />
+                        </View>
+                        <View
+                            style={{
+                                marginTop: 15,
+                                marginHorizontal: 10,
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 11,
+                                    color: "#444444",
+                                    textAlign: "center"
+                                }}
+                            >
+                                {item.galeri_album_name}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )
+            });
 
+        return (btn);
+    }
+
+    _VerticalScroll() {
+        const navigation = this.props.navigation;
+
+        const btn = this.state.galeriColumn.map
+            (function (item, index) {
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        style={{
+                            width: dWidth * 0.5,
+                            height: 150
+                        }}
+                        onPress={() => navigation.navigate('GaleriDetail',
+                            {
+                                pid: item.galeri_album_pid
+                            }
+                        )}
+                    >
+                        <View
+                            style={{
+                                paddingHorizontal: 10
+                            }}
+                        >
+                            <Image
+                                style={{ width: "100%", height: 100 }}
+                                source={{ uri: `${global.s3}galeri/${item.galeri_album_pid}/${item.galeri_img}` }}
+                            />
+                        </View>
+                        <View
+                            style={{
+                                marginTop: 10,
+                                marginHorizontal: 10,
+                                alignItems: "center",
+                                paddingHorizontal: 10
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: "#444444",
+                                    textAlign: "center"
+                                }}
+                            >
+                                {item.galeri_album_name}
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 )
             });
@@ -101,6 +188,7 @@ export default class Galeri extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
+        const { search } = this.state;
 
         return (
             <SafeAreaView
@@ -137,77 +225,69 @@ export default class Galeri extends React.Component {
                         >
                             <View
                                 style={{
-                                    backgroundColor: "red",
-                                    height: 100,
-                                    width: 50
+                                    paddingTop: 20,
+                                    paddingBottom: 15,
+                                    paddingHorizontal: 30
                                 }}
                             >
+                                <TextInput
+                                    value={search}
+                                    onChangeText={search => this.setState({ search })}
+                                    placeholder="Cari Album..."
+                                    style={{
+                                        width: 300,
+                                        padding: 6,
+                                        borderRadius: 19,
+                                        borderColor: "#333333",
+                                        borderWidth: 0.7,
+                                    }}
+                                >
 
+                                </TextInput>
+                            </View>
+                            <View
+                                style={{
+                                    paddingLeft: 10,
+                                    marginVertical: 14
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: "bold"
+                                    }}
+                                >Album Terbaru Bulan Ini:</Text>
                             </View>
                             <ScrollView
                                 style={{
-                                    backgroundColor: "green",
-                                    height: 140,
+                                    height: 160,
 
                                 }}
                                 horizontal={true}
                             >
-                                <View
-                                    style={{
-                                        backgroundColor: "red",
-                                        width: 250,
-                                    }}
-                                >
-                                    {this._HorizontalScroll()}
-                                </View>
+                                {this._HorizontalScroll()}
 
                             </ScrollView>
+
+                            <View
+                                style={{
+                                    paddingLeft: 10,
+                                    marginBottom: 14,
+                                    marginTop: 5
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: "bold"
+                                    }}
+                                >Album MyBoget:</Text>
+                            </View>
 
                             <View
                                 style={{
                                     flexDirection: "row"
                                 }}
                             >
-                                <View
-                                    style={{
-                                        flex: 0.25,
-                                        backgroundColor: "blue",
-                                        height: 180,
-                                        width: 40
-                                    }}
-                                >
-
-                                </View>
-                                <View
-                                    style={{
-                                        flex: 0.25,
-                                        backgroundColor: "yellow",
-                                        height: 180,
-                                        width: 40
-                                    }}
-                                >
-
-                                </View>
-                                <View
-                                    style={{
-                                        flex: 0.25,
-                                        backgroundColor: "blue",
-                                        height: 180,
-                                        width: 40
-                                    }}
-                                >
-
-                                </View>
-                                <View
-                                    style={{
-                                        flex: 0.25,
-                                        backgroundColor: "yellow",
-                                        height: 180,
-                                        width: 40
-                                    }}
-                                >
-
-                                </View>
+                                {this._VerticalScroll()}
                             </View>
                         </View>
 

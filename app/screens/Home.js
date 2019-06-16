@@ -322,7 +322,8 @@ export default class Home extends React.Component {
                                     <TouchableOpacity
                                         onPress={() => navigation.navigate('Elapor')}
                                         style={{
-                                            marginLeft: 170
+                                            marginLeft: 170,
+                                            width: 40,
                                         }}
                                     >
                                         <Image
