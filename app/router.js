@@ -9,6 +9,7 @@ import NewsHome from './screens/NewsHome';
 import TempatDetail from './screens/TempatDetail';
 import Galeri from './screens/Galeri';
 import GaleriDetail from './screens/GaleriDetail';
+import TentangKami from './screens/TentangKami';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
@@ -255,7 +256,11 @@ const HomeScreen = createStackNavigator({
 		screen: IzinRame
 	},
 	Elapor: {
+
 		screen: ElaporContainer
+	},
+	TentangKami: {
+		screen: TentangKami
 	}
 }, {
 		headerMode: 'none',

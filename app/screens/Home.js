@@ -369,6 +369,42 @@ export default class Home extends React.Component {
                             style={{
                                 alignItems: 'center',
                                 marginTop: 15,
+                                marginBottom: 15,
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    alignItems: "center",
+                                    borderWidth: 0.1,
+                                    borderRadius: 9,
+                                    shadowColor: 'grey',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowRadius: 1,
+                                    shadowOpacity: 0.35,
+                                    elevation: 1,
+                                    padding: 15
+                                }}
+                                onPress={() => navigation.navigate('TentangKami')}
+                            >
+                                <Image
+                                    style={{
+                                        width: 80,
+                                        height: 80,
+                                    }}
+                                    source={require('../../assets/icon_trans.png')}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: 12
+                                    }}
+                                >Tentang Kami</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                marginTop: 15,
                                 marginBottom: 45,
                             }}
                         >
@@ -426,7 +462,7 @@ export default class Home extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-            </SafeAreaView>
+            </SafeAreaView >
         );
     }
 }
