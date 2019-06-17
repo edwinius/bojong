@@ -170,7 +170,7 @@ export default class GaleriDetail extends React.Component {
                                         textAlign: "center",
                                         paddingTop: 15,
                                         paddingBottom: 10,
-                                        fontSize: 18ga,
+                                        fontSize: 18,
                                         fontWeight: "bold"
                                     }}
                                 >
