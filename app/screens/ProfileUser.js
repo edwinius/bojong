@@ -19,7 +19,7 @@ export default class ProfileUser extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             isLoading: true,
             userPid: '',
@@ -29,19 +29,19 @@ export default class ProfileUser extends React.Component {
     }
 
     async getToken() {
-		try {
-			const navigation = this.props.navigation;
-			let userPid = await AsyncStorage.getItem('userPid');
+        try {
+            const navigation = this.props.navigation;
+            let userPid = await AsyncStorage.getItem('userPid');
             let userToken = await AsyncStorage.getItem('userToken');
             let userAdmin = await AsyncStorage.getItem('userAdmin');
 
             // If not logged set userPid & userToken to 0
-			if(userPid == null || userPid == '' || userToken == null || userToken == '') {
-				userPid = '',
-				userToken = ''
+            if (userPid == null || userPid == '' || userToken == null || userToken == '') {
+                userPid = '',
+                    userToken = ''
             }
-            
-            if(this.mounted) {
+
+            if (this.mounted) {
                 this.setState({
                     userPid: userPid,
                     userToken: userToken,
@@ -49,37 +49,37 @@ export default class ProfileUser extends React.Component {
                     isLoading: false
                 });
             }
-        } catch(error) {
-			console.log(error);
-		}
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     componentDidMount() {
         this.mounted = true;
         this.getToken();
-	}
-	
-	componentWillUnmount() {
-		this.mounted = false;
-	}
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
 
     render() {
-        if(this.state.isLoading) {
-			return(
-				<LoadingScreen />
-			);
-		}
+        if (this.state.isLoading) {
+            return (
+                <LoadingScreen />
+            );
+        }
 
         const navigation = this.props.navigation;
-		
-		return(
-			<SafeAreaView style={ styleGeneral.safeAreaView }>
+
+        return (
+            <SafeAreaView style={styleGeneral.safeAreaView}>
                 <View
                     style={{
                         flex: 1,
                         backgroundColor: 'white'
                     }}
-                >   
+                >
                     <ScrollView>
                         <View
                             style={{
@@ -89,7 +89,7 @@ export default class ProfileUser extends React.Component {
                             }}
                         >
                             <Image
-                                source={ require('../../assets/logo_bojong.png') }
+                                source={require('../../assets/logo_bojong.png')}
                                 style={{
                                     width: 200,
                                     height: 200
@@ -97,7 +97,7 @@ export default class ProfileUser extends React.Component {
                             />
                         </View>
 
-                        { this.state.userAdmin == '1' ?
+                        {this.state.userAdmin == '1' ?
                             <View>
                                 <TouchableOpacity
                                     style={{
@@ -119,7 +119,29 @@ export default class ProfileUser extends React.Component {
                                     </Text>
                                 </TouchableOpacity>
                             </View>
-                        : null }
+                            : null}
+
+                        <View>
+                            <TouchableOpacity
+                                style={{
+                                    backgroundColor: 'green',
+                                    alignItems: 'center',
+                                    marginHorizontal: 10,
+                                    paddingVertical: 10,
+                                }}
+                                onPress={() => navigation.navigate('Setting')}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontSize: 16,
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Setting
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
                         <View>
                             <TouchableOpacity
@@ -156,14 +178,14 @@ export default class ProfileUser extends React.Component {
                                     marginTop: 50,
                                 }}
                             >
-                                { global.appVersion }
+                                {global.appVersion}
                             </Text>
                         </View>
                     </ScrollView>
                 </View>
             </SafeAreaView>
         );
-            
+
     }
 
 }

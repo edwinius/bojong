@@ -7,6 +7,9 @@ import Home from './screens/Home';
 import Elapor from './screens/Elapor';
 import NewsHome from './screens/NewsHome';
 import TempatDetail from './screens/TempatDetail';
+import Galeri from './screens/Galeri';
+import GaleriDetail from './screens/GaleriDetail';
+import TentangKami from './screens/TentangKami';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
@@ -27,6 +30,16 @@ import IzinRame from './screens/layanan/IzinRame';
 
 // Import Inbox
 import InboxHome from './screens/InboxHome';
+
+// Setting
+import Setting from './screens/Setting/Setting';
+import SettingAkun from './screens/Setting/SettingAkun';
+import SettingID from './screens/Setting/SettingID';
+import SettingAkunDanID from './screens/Setting/SettingAkunDanID';
+import KebijakanPrivasi from './screens/Setting/KebijakanPrivasi';
+import PusatBantuan from './screens/Setting/PusatBantuan';
+import SyaratDanKetentuan from './screens/Setting/SyaratDanKetentuan';
+import Keluar from './screens/Setting/Keluar';
 
 // Import Profile
 import ProfileHome from './screens/ProfileHome';
@@ -73,6 +86,30 @@ export const InboxContainer = createAppContainer(InboxScreen);
 const UserScreen = createStackNavigator({
 	ProfileUser: {
 		screen: ProfileUser,
+	},
+	Setting: {
+		screen: Setting,
+	},
+	SettingAkunDanID: {
+		screen: SettingAkunDanID,
+	},
+	SettingAkun: {
+		screen: SettingAkun,
+	},
+	SettingID: {
+		screen: SettingID
+	},
+	SyaratDanKetentuan: {
+		screen: SyaratDanKetentuan
+	},
+	KebijakanPrivasi: {
+		screen: KebijakanPrivasi
+	},
+	PusatBantuan: {
+		screen: PusatBantuan
+	},
+	Keluar: {
+		screen: Keluar
 	}
 }, {
 		headerMode: 'none',
@@ -123,6 +160,21 @@ const ElaporScreen = createStackNavigator({
 
 export const ElaporContainer = createAppContainer(ElaporScreen);
 
+// Galeri
+const GaleriScreen = createStackNavigator({
+	Galeri: {
+		screen: Galeri,
+	},
+	GaleriDetail: {
+		screen: GaleriDetail,
+	}
+}, {
+		headerMode: 'none',
+		mode: 'modal',
+	});
+
+export const GaleriContainer = createAppContainer(GaleriScreen);
+
 // NewsHome
 const NewsScreen = createStackNavigator({
 	NewsHome: {
@@ -162,7 +214,7 @@ const HomeScreen = createStackNavigator({
 		screen: TempatDetail,
 	},
 	LayananPage: {
-		screen: LayananPage,
+		screen: LayananPage
 	},
 	KtpPage: {
 		screen: LayananUpload
@@ -203,6 +255,13 @@ const HomeScreen = createStackNavigator({
 	IzinRame: {
 		screen: IzinRame
 	},
+	Elapor: {
+
+		screen: ElaporContainer
+	},
+	TentangKami: {
+		screen: TentangKami
+	}
 }, {
 		headerMode: 'none',
 	});
@@ -230,7 +289,7 @@ const SignedInHome = createBottomTabNavigator({
 		screen: NewsContainer,
 		gesturesEnabled: false,
 		navigationOptions: {
-			tabBarLabel: 'Berita  ',
+			tabBarLabel: 'Berita',
 			tabBarIcon: () =>
 				<Image
 					source={require('../assets/icons/news_black.png')}
@@ -241,17 +300,17 @@ const SignedInHome = createBottomTabNavigator({
 				/>
 		}
 	},
-	Elapor: {
-		screen: ElaporContainer,
+	Galeri: {
+		screen: GaleriContainer,
 		gesturesEnabled: false,
 		navigationOptions: {
-			tabBarLabel: 'Lapor',
+			tabBarLabel: 'Galeri',
 			tabBarIcon: () =>
 				<Image
-					source={require('../assets/icons/lapor_black.png')}
+					source={require('../assets/icons/galeri_black.png')}
 					style={{
-						width: 30,
-						height: 30,
+						width: 29,
+						height: 25,
 					}}
 				/>
 		}
@@ -356,8 +415,8 @@ const AdminScreen = createStackNavigator({
 		screen: DinamisPendidikan
 	}
 }, {
-	headerMode: 'none',
-});
+		headerMode: 'none',
+	});
 
 export const AdminContainer = createAppContainer(AdminScreen);
 
