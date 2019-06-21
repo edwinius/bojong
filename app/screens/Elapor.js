@@ -217,6 +217,32 @@ export default class Elapor extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
+
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                marginVertical: 25,
+                                paddingVertical: 15,
+                                borderTopWidth: 1,
+                                borderColor: '#cacaca'
+                            }}
+                        >
+                            <Text>
+                                Kecamatan Bojonggenteng
+                            </Text>
+
+                            <Text
+                                style={{
+                                    paddingVertical: 10
+                                }}
+                            >
+                                Tel: 0266 620147
+                            </Text>
+
+                            <Text>
+                                Email: kec.bojonggenteng@gmail.com
+                            </Text>
+                        </View>
                     </ScrollView>
                 </View>
             </SafeAreaView>

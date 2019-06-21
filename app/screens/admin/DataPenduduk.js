@@ -19,15 +19,60 @@ export default class DataPenduduk extends React.Component {
         super(props);
         
         this.state = {
-            isLoading: false,
+            isLoading: true,
             data: [],
             q: ''
         }
     }
 
+    async getToken() {
+		try {
+            const navigation = this.props.navigation;
+
+			// Fetch home data
+			fetch(`${global.api}fetch_data`,
+			{
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					appToken: global.appToken,
+                    table: 'penduduk',
+                    data: {
+                        q: '',
+                        page: 0
+                    }
+				})
+			}).then((response) => response.json())
+			.then((responseJson) => {
+                //console.log(responseJson);
+                
+                if(responseJson['status'] == '200') {
+					if(this.mounted) {
+						this.setState({
+							isLoading: false,
+                            data: responseJson['data']['penduduk']
+						});
+					}
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+			
+		} catch(error) {
+			console.log(error);
+		}
+    }
+    
     componentDidMount() {
 		this.mounted = true;
-		//this.getToken();
+		this.getToken();
+    }
+    
+    componentWillUnmount() {
+		this.mounted = false;
     }
 
     _SearchPenduduk = () => {

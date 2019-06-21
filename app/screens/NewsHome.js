@@ -13,6 +13,8 @@ import {
 
 import Carousel from 'react-native-banner-carousel';
 
+import LoadingScreen from './common/LoadingScreen';
+
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
 const bannerHeight = dWidth * 0.67;
@@ -202,6 +204,10 @@ export default class NewsHome extends React.Component {
     }
 
     render() {
+        if(this.state.isLoading) {
+			return( <LoadingScreen /> );
+        }
+        
         const navigation = this.props.navigation;
 
         return (

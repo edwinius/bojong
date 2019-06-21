@@ -28,6 +28,7 @@ export default class AdminLayanan extends React.Component {
 		try {
             const navigation = this.props.navigation;
             let type = navigation.state.params.type;
+            let status = navigation.state.params.status;
 
             fetch(`${global.api}fetch_data`,
 			{
@@ -42,7 +43,7 @@ export default class AdminLayanan extends React.Component {
                     data: {
                         type: type,
                         page: '0',
-                        status: '2',
+                        status: status,
                     }
 				})
 			}).then((response) => response.json())
@@ -77,6 +78,7 @@ export default class AdminLayanan extends React.Component {
 
     _ShowData() {
         const navigation = this.props.navigation;
+        let status = navigation.state.params.status;
 
         if(this.state.data.row.length > 0) {
             const content = this.state.data.row.map(function(v, i) {
@@ -86,36 +88,52 @@ export default class AdminLayanan extends React.Component {
                         onPress={() => navigation.navigate('AdminLayananFiles',
                         {
                             pid: v.layanan_pid,
-                            type: v.layanan_type
+                            type: v.layanan_type,
+                            status: status
                         })}
                         style={{
                             borderBottomWidth: 1,
                             borderColor: '#e0e0e0',
                             paddingHorizontal: 22,
                             paddingVertical: 12,
-                            flexDirection: 'row',
                         }}
                     >
                         <View
                             style={{
-                                borderRightWidth: 1,
-                                borderColor: '#e0e0e0',
-                                paddingRight: 10,
+                                paddingVertical: 2,
                             }}
                         >
                             <Text>
-                                { parseDate(v.layanan_datetime) }
+                                #{ v.layanan_ts }
                             </Text>
                         </View>
 
                         <View
                             style={{
-                                paddingHorizontal: 10
+                                flexDirection: 'row',
                             }}
                         >
-                            <Text>
-                                { v.penduduk_first_name }
-                            </Text>
+                            <View
+                                style={{
+                                    borderRightWidth: 1,
+                                    borderColor: '#e0e0e0',
+                                    paddingRight: 10,
+                                }}
+                            >
+                                <Text>
+                                    { parseDate(v.layanan_datetime) }
+                                </Text>
+                            </View>
+
+                            <View
+                                style={{
+                                    paddingHorizontal: 10
+                                }}
+                            >
+                                <Text>
+                                    { v.penduduk_first_name.toUpperCase() }
+                                </Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );

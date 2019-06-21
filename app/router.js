@@ -10,6 +10,7 @@ import TempatDetail from './screens/TempatDetail';
 
 //Import Layanan Pages
 import LayananPage from './screens/LayananPage';
+import LayananUser from './screens/LayananUser';
 import LayananUpload from './screens/layanan/LayananUpload';
 import KtpPage from './screens/layanan/KtpPage';
 import KK from './screens/layanan/KK';
@@ -42,6 +43,7 @@ import AdminHome from './screens/admin/AdminHome';
 import AdminLayanan from './screens/admin/AdminLayanan';
 import AdminLayananList from './screens/admin/AdminLayananList';
 import AdminLayananFiles from './screens/admin/AdminLayananFiles';
+import AdminLayananOptions from './screens/admin/AdminLayananOptions';
 import DataPenduduk from './screens/admin/DataPenduduk';
 import DetailPenduduk from './screens/admin/DetailPenduduk';
 import TempatIbadah from './screens/admin/TempatIbadah';
@@ -56,6 +58,8 @@ import DinamisPendudukKelamin from './screens/admin/DinamisPendudukKelamin';
 import DinamisPendudukKemiskinanDetail from './screens/admin/DinamisPendudukKemiskinanDetail';
 import DinamisKesehatan from './screens/admin/DinamisKesehatan';
 import DinamisPendidikan from './screens/admin/DinamisPendidikan';
+
+import TestUpload from './screens/TestUpload';
 
 // Inbox
 const InboxScreen = createStackNavigator({
@@ -138,6 +142,20 @@ const NewsScreen = createStackNavigator({
 
 export const NewsContainer = createAppContainer(NewsScreen);
 
+// Layanan
+const LayananScreen = createSwitchNavigator({
+	LayananUser: {
+		screen: LayananUser,
+	},
+	LayananUpload: {
+		screen: LayananUpload
+	},
+}, {
+	headerMode: 'none',
+});
+
+export const LayananContainer = createAppContainer(LayananScreen);
+
 // Home
 const HomeScreen = createStackNavigator({
 	Home: {
@@ -163,6 +181,9 @@ const HomeScreen = createStackNavigator({
 	},
 	LayananPage: {
 		screen: LayananPage,
+	},
+	LayananContainer: {
+		screen: LayananContainer
 	},
 	KtpPage: {
 		screen: LayananUpload
@@ -203,6 +224,9 @@ const HomeScreen = createStackNavigator({
 	IzinRame: {
 		screen: IzinRame
 	},
+	TestUpload: {
+		screen: TestUpload
+	}
 }, {
 		headerMode: 'none',
 	});
@@ -230,7 +254,7 @@ const SignedInHome = createBottomTabNavigator({
 		screen: NewsContainer,
 		gesturesEnabled: false,
 		navigationOptions: {
-			tabBarLabel: 'Berita  ',
+			tabBarLabel: 'Berita',
 			tabBarIcon: () =>
 				<Image
 					source={require('../assets/icons/news_black.png')}
@@ -318,6 +342,9 @@ const AdminScreen = createStackNavigator({
 	},
 	AdminLayananFiles: {
 		screen: AdminLayananFiles
+	},
+	AdminLayananOptions: {
+		screen: AdminLayananOptions
 	},
 	DataPenduduk: {
 		screen: DataPenduduk

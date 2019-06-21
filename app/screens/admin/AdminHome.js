@@ -116,7 +116,7 @@ export default class Home extends React.Component{
             {
                 menuName: 'Layanan',
                 menuImg: require('../../../assets/icons/icon_layanan.png'),
-                menuScreen: 'AdminLayanan'
+                menuScreen: 'AdminLayananOptions'
             }
         ];
 

@@ -496,6 +496,7 @@ export default class AdminLayanan extends React.Component {
                                 style={{
                                     width: '100%',
                                     height: 200,
+                                    marginTop: 5,
                                 }}
                             >
                                 { file != null ?
@@ -570,6 +571,7 @@ export default class AdminLayanan extends React.Component {
         }
 
         const navigation = this.props.navigation;
+        let status = navigation.state.params.status;
 
         return(
             <View style={{flex: 1}}>
@@ -600,9 +602,10 @@ export default class AdminLayanan extends React.Component {
                     <SafeAreaView
                         style={{
                             flexDirection: 'row',
+                            paddingVertical: 5,
                         }}
                     >
-                        { this.state.data[0].del == '2' ?
+                        { this.state.data[0].del == '2' || (this.state.data[0].del == '3' && status == '3') ?
                             <View
                                 style={{
                                     flexDirection: 'row',
@@ -615,7 +618,7 @@ export default class AdminLayanan extends React.Component {
                                     {
                                         backgroundColor: 'green'
                                     }]}
-                                    onPress={ () => this._SubmitLayanan('3') }
+                                    onPress={ () => this._SubmitLayanan(`${status == '3' ? '5' : '3'}`) }
                                 >
                                     <Text
                                         style={[ styles.txtBtnLayanan,
@@ -623,7 +626,7 @@ export default class AdminLayanan extends React.Component {
                                             color: 'white'
                                         }]}
                                     >
-                                        Terima
+                                        { status == '3' ? 'Otorisasi' : 'Terima' }
                                     </Text>
                                 </TouchableOpacity>
 
@@ -649,7 +652,7 @@ export default class AdminLayanan extends React.Component {
                                 style={{
                                     alignItems: 'center',
                                     flex: 1,
-                                    backgroundColor: `${ this.state.data[0].del == '3' ? '#99ff99' : '#e0e0e0' }`,
+                                    backgroundColor: `${ this.state.data[0].del == '3' || this.state.data[0].del == '5' ? '#99ff99' : '#e0e0e0' }`,
                                     paddingVertical: 10,
                                 }}
                             >
@@ -659,7 +662,7 @@ export default class AdminLayanan extends React.Component {
                                     }}
                                 >
                                     Pengajuan ini telah 
-                                    { this.state.data[0].del == '3' ? ' Diterima' : ' Ditolak' }
+                                    { this.state.data[0].del == '3' || this.state.data[0].del == '5' ? ' Diterima' : ' Ditolak' }
                                 </Text>
                             </View>
                         }

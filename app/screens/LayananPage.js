@@ -1,75 +1,130 @@
 import React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
+    Alert,
+    AsyncStorage,
+    Platform,
+    SafeAreaView,
     ScrollView,
     StatusBar,
-    Alert,
-    SafeAreaView,
-    Platform,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 import BackBtn from './common/BackBtn';
 
 export default class LayananPage extends React.Component {
 
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            isLoading: true,
+            userPid: null,
+            userToken: null,
+        }
+    }
+
+    async getToken() {
+		try {
+			const navigation = this.props.navigation;
+			let userPid = await AsyncStorage.getItem('userPid');
+            let userToken = await AsyncStorage.getItem('userToken');
+
+            // If not logged set userPid & userToken to 0
+			if(userPid == null || userPid == '' || userToken == null || userToken == '') {
+				userPid = '',
+				userToken = ''
+            }
+            
+            this.setState({
+                userPid: userPid,
+                userToken: userToken
+            })
+        } catch(error) {
+			console.log(error);
+		}
+    }
+    
+    componentDidMount() {
+		this.mounted = true;
+		this.getToken();
+    }
+    
+    componentWillUnmount() {
+		this.mounted = false;
+    }
+
     _ShowButtons() {
         const navigation = this.props.navigation;
+        let { userPid } = this.state;
 
         const buttons = [
             {
                 btnName: 'Perekaman e-KTP',
-                btnPage: 'KtpPage'
+                btnPage: 'KtpPage',
+                layananType: '1'
             },
             {
                 btnName: 'Pembuatan KK',
-                btnPage: 'KK'
+                btnPage: 'KK',
+                layananType: '2'
             },
             {
                 btnName: 'Penerbitan Surat Pindah',
-                btnPage: 'PageSuratPindah'
+                btnPage: 'PageSuratPindah',
+                layananType: '3'
             },
             {
                 btnName: 'Pembuatan IMB dibawah 200m2',
-                btnPage: 'ImbDibawah200m'
+                btnPage: 'ImbDibawah200m',
+                layananType: '4'
             },
             {
                 btnName: 'Pembuatan IMB diatas 200m2',
-                btnPage: 'ImbDiatas200m'
+                btnPage: 'ImbDiatas200m',
+                layananType: '5'
             },
             {
                 btnName: 'Surat Keterangan Jampersal',
-                btnPage: 'Jampersal'
+                btnPage: 'Jampersal',
+                layananType: '7'
             },
             {
                 btnName: 'Pembuatan SIUP/TDP',
-                btnPage: 'SIUPdanTDP'
+                btnPage: 'SIUPdanTDP',
+                layananType: '8'
             },
             {
                 btnName: 'VISUM',
-                btnPage: 'VISUM'
+                btnPage: 'VISUM',
+                layananType: '9'
             },
             {
                 btnName: 'PPATS',
-                btnPage: 'PPATS'
+                btnPage: 'PPATS',
+                layananType: '6'
             },
             {
                 btnName: 'Surat Keterangan Ahli Waris',
-                btnPage: 'PageAhliWaris'
+                btnPage: 'PageAhliWaris',
+                layananType: '10'
             },
             {
                 btnName: 'Surat Keterangan Pinjam ke Bank',
-                btnPage: 'PagePinjamBank'
+                btnPage: 'PagePinjamBank',
+                layananType: '11'
             },
             {
                 btnName: 'Izin Reklame Tanpa Sponsor',
-                btnPage: 'IzinReklame'
+                btnPage: 'IzinReklame',
+                layananType: '12'
             },
             {
                 btnName: 'Rekomendasi Izin Rame-Rame',
-                btnPage: 'IzinRame'
+                btnPage: 'IzinRame',
+                layananType: '13'
             }
         ];
 
@@ -82,7 +137,17 @@ export default class LayananPage extends React.Component {
                         marginTop: 14,
                         justifyContent: "center",
                     }}
-                    onPress={() => navigation.navigate(`${item.btnPage}`)}
+                    onPress={() => {
+                        if(userPid > 0) {
+                            navigation.navigate('LayananContainer', {
+                                layananType: `${item.layananType}`,
+                                userPid: userPid,
+                                layananName: `${item.btnName}`
+                            });
+                        } else {
+                            Alert.alert('Mohon Log In terlebih dahulu');
+                        }
+                    }}
                 >
                     <View
                         style={{

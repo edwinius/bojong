@@ -11,6 +11,8 @@ import {
 
 import Banner from '../common/Banner';
 import Header from '../common/Header';
+import NoData from '../common/NoData';
+import LoadingScreen from '../common/LoadingScreen';
 
 const dimensions = Dimensions.get('window');
 const dWidth = dimensions.width;
@@ -43,7 +45,13 @@ export default class TempatIbadah extends React.Component{
 				})
 			}).then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson);
+                console.log(responseJson);
+                
+                if(this.mounted) {
+                    this.setState({
+                        data: responseJson['data']
+                    });
+                }
 			}).catch((error) => {
 				console.error(error);
 			});
@@ -57,66 +65,102 @@ export default class TempatIbadah extends React.Component{
 		this.mounted = true;
 		this.getToken();
     }
+    
+    componentWillUnmount() {
+		this.mounted = false;
+    }
 
     _ShowTempatIbadah() {
-        const arrIbadah = ['1', '2', '3'];
+        let navigation = this.props.navigation;
 
-        const contentIbadah = arrIbadah.map(function(t, index) {
-            return(
-                <TouchableOpacity
-                    key={ index }
-                    style={{
-                        flexDirection: 'row',
-                        paddingVertical: 10,
-                    }}
-                >
-                    <View>
-                        <Image
-                            source={ require('../../../assets/images/masjid_darul_amal.jpg') }
-                            style={{
-                                width: dWidth * 0.3,
-                                height: dWidth * 0.3 * 0.6
-                            }}
-                        />
-                    </View>
-                    <View
+        if(this.state.data.length > 0) {
+            const contentIbadah = this.state.data.map(function(t, index) {
+                return(
+                    <TouchableOpacity
+                        key={ index }
                         style={{
-                            flex: 1,
-                            paddingHorizontal: 10,
+                            flexDirection: 'row',
+                            paddingVertical: 10,
                         }}
+                        onPress={ () => navigation.navigate('TempatDetail',
+                        {
+                            tempatPid: t.tempat_pid
+                        })}
                     >
                         <View>
-                            <Text>
-                                Masjid Darul Amal
-                            </Text>
+                            <Image
+                                source={ 
+                                    t.tempat_img != null && t.tempat_img != '' 
+                                ? 
+                                    {uri: `${global.s3}tempat/${t.tempat_pid}/${t.tempat_img}`} 
+                                : 
+                                    require('../../../assets/images/tempat_ibadah.jpg') 
+                                }
+                                style={{
+                                    width: dWidth * 0.3,
+                                    height: dWidth * 0.3 * 0.6
+                                }}
+                            />
                         </View>
                         <View
                             style={{
-                                flexWrap: 'wrap',
-                                width: '100%',
-                                paddingTop: 5,
+                                flex: 1,
+                                paddingHorizontal: 10,
                             }}
                         >
-                            <Text
+                            <View>
+                                <Text>
+                                    { t.tempat_name }
+                                </Text>
+                            </View>
+
+                            <View>
+                                <Text
+                                    style={{
+                                        color: 'grey',
+                                        fontSize: 9
+                                    }}
+                                >
+                                    { t.tempat_address }
+                                </Text>
+                            </View>
+
+                            <View
                                 style={{
                                     flexWrap: 'wrap',
-                                    flex: 1,
-                                    fontSize: 11,
-                                    color: 'grey'
+                                    width: '100%',
+                                    paddingTop: 8,
                                 }}
                             >
-                                Masjid terbesar di kecamatan Bojonggenteng
-                            </Text>
+                                <Text
+                                    style={{
+                                        flexWrap: 'wrap',
+                                        flex: 1,
+                                        fontSize: 11,
+                                        color: 'grey'
+                                    }}
+                                >
+                                    { t.tempat_desc }
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                </TouchableOpacity>
-            )
-        });
+                    </TouchableOpacity>
+                )
+            });
 
-        return contentIbadah;
+            return contentIbadah;
+        } else {
+            return(<NoData text='Tidak Ada Data' />);
+        }
     }
 
     render() {
+        if(this.state.isLoading) {
+			return(
+				<LoadingScreen />
+			);
+        }
+        
         const navigation = this.props.navigation;
 
         return(
@@ -138,6 +182,7 @@ export default class TempatIbadah extends React.Component{
                         flex: 1
                     }}
                 >
+                    {/*
                     <View
                         style={{
                             flex: 1
@@ -187,6 +232,7 @@ export default class TempatIbadah extends React.Component{
                             </Text>
                         </View>
                     </View>
+                    */}
 
                     <View
                         style={{

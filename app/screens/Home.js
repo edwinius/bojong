@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import {
     AsyncStorage,
     Dimensions,
@@ -247,6 +247,23 @@ export default class Home extends React.Component {
                                 source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
                                 //source={item.berita_img}
                             />
+
+                            <View
+                                style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                    position: 'absolute',
+                                    zIndex: 2,
+                                    bottom: 0,
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    paddingTop: 5,
+                                    paddingBottom: 13,
+                                }}
+                            >
+                                <Text>
+                                    { item.berita_title }
+                                </Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -336,6 +353,19 @@ export default class Home extends React.Component {
 
                         <View
                             style={{
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                                paddingBottom: 20,
+                                marginTop: 50,
+                            }}
+                        >
+                            { this._ShowMenuStatis() }
+                        </View>
+
+                        {/*
+                        <View
+                            style={{
                                 borderWidth: 0.3,
                                 marginTop: 50,
                                 marginHorizontal: 40,
@@ -383,6 +413,7 @@ export default class Home extends React.Component {
                                 </Text>
                             </View>
                         </View>
+                        */}
 
                         <View
                             style={{
@@ -402,17 +433,6 @@ export default class Home extends React.Component {
                                     source={require('../../assets/tombol.png')}
                                 />
                             </TouchableOpacity>
-                        </View>
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                flexWrap: 'wrap',
-                                justifyContent: 'center',
-                                paddingBottom: 20,
-                            }}
-                        >
-                            { this._ShowMenuStatis() }
                         </View>
 
                         <View
