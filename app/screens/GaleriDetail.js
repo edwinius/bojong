@@ -96,17 +96,16 @@ export default class GaleriDetail extends React.Component {
                     <View
                         key={index}
                         style={{
-                            width: 150,
-                            height: 110,
-                            marginHorizontal: 10
+                            width: dWidth/2,
+                            paddingHorizontal: 3,
+                            paddingVertical: 3,
                         }}
-                        onPress={() => navigation.navigate('GaleriDetail')}
                     >
                         <View>
                             <Image
                                 style={{
-                                    width: 150,
-                                    height: 100,
+                                    width: (dWidth/2)-6,
+                                    height: ((dWidth/2)-6)/3*2,
                                 }}
                                 source={{ uri: `${global.s3}galeri/${item.galeri_album_pid}/${item.galeri_img}` }}
                             />
@@ -148,7 +147,7 @@ export default class GaleriDetail extends React.Component {
                     <BackBtn
                         title="Album"
                         navigation={navigation}
-                        back={false}
+                        back={true}
                     />
 
                     <ScrollView
@@ -203,7 +202,6 @@ export default class GaleriDetail extends React.Component {
                                 style={{
                                     flexDirection: "row",
                                     flexWrap: "wrap",
-                                    padding: 10
                                 }}
                             >
                                 {this._GaleriFoto()}

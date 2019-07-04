@@ -284,7 +284,7 @@ export default class Home extends React.Component{
                     <View
                         style={{
                             paddingBottom: 25,
-                            paddingTop: 75,
+                            paddingTop: 95,
                         }}
                     >
                         <View>

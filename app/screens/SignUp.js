@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Alert,
     AsyncStorage,
+    Button,
     SafeAreaView,
     ScrollView,
     Text,
@@ -35,7 +36,18 @@ export default class SignUp extends React.Component {
 	
 	componentWillUnmount() {
 		this.mounted = false;
-	}
+    }
+    
+    _VerifyPhoneNumber = () => {
+        const { UserHandphone } = this.state;
+
+        firebase.auth().verifyPhoneNumber(UserHandphone)
+        .then((confirmResult) => {
+            this.setState({ confirmResult });
+        }).catch((error) => {
+            const { code, message } = error;
+        })
+    }
 
     UserRegister = () => {
         const { UserHandphone, UserPassword, UserPasswordConfirm } = this.state;
@@ -44,46 +56,13 @@ export default class SignUp extends React.Component {
         if(UserHandphone != '' && UserPassword != '' && UserPasswordConfirm != '') {
             if(UserPassword == UserPasswordConfirm) {
                 this.setState({
-                    isLoading: true
+                    isLoading: false
                 });
 
-                fetch(`${global.api}register_data`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        appToken: global.appToken,
-                        data: {
-                            hp: UserHandphone,
-                            pass: UserPassword,
-                        }
-                    })
-                }).then((response) => response.json())
-                .then((responseJson) => {
-                    //console.log(responseJson);
-
-                    if(responseJson['status'] == '200') {
-                        const pid = JSON.stringify(responseJson['user_pid']);
-                        let admin = JSON.stringify(responseJson['user_admin']);
-
-                        AsyncStorage.setItem('userPid', pid);
-                        AsyncStorage.setItem('userAdmin', admin);
-                        AsyncStorage.setItem('userToken', pid);
-                        navigation.navigate('ProfileUser');
-                    } else {
-                        Alert.alert(responseJson['msg']);
-                    }
-
-                    if(this.mounted) {
-                        this.setState({
-                            isLoading: false
-                        });
-                    }
-                    
-                }).catch((error) => {
-                    console.error(error);
+                navigation.navigate('SignUpCaptcha',
+                {
+                    UserHandphone: UserHandphone,
+                    UserPassword: UserPassword
                 });
             } else {
                 Alert.alert('Password dan ulangi password tidak sama');
@@ -115,6 +94,8 @@ export default class SignUp extends React.Component {
                         navigation={navigation}
                         back={false}
                     />
+                    
+                    {/*<Button title="Send Code" onPress={() => navigation.navigate('SignUpCaptcha')} />*/}
 
                     <ScrollView>
                         <View style={ styleFormSignInUp.containerForm }>

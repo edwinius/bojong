@@ -47,6 +47,9 @@ import ProfileHome from './screens/ProfileHome';
 import ProfileUser from './screens/ProfileUser';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
+import SignUpCaptcha from './screens/SignUpCaptcha';
+import SignUpKtp from './screens/SignUpKtp';
+import SignUpPendudukNotFound from './screens/SignUpPendudukNotFound';
 
 // Import News
 import NewsDetail from './screens/NewsDetail';
@@ -117,7 +120,7 @@ const UserScreen = createStackNavigator({
 	}
 }, {
 		headerMode: 'none',
-	});
+});
 
 export const UserContainer = createAppContainer(UserScreen);
 
@@ -129,6 +132,9 @@ const SignedOutScreen = createStackNavigator({
 	SignUp: {
 		screen: SignUp
 	},
+	SignUpCaptcha: {
+		screen: SignUpCaptcha
+	}
 }, {
 		headerMode: 'none',
 	});
@@ -158,9 +164,9 @@ const ElaporScreen = createStackNavigator({
 		screen: Elapor,
 	},
 }, {
-		headerMode: 'none',
-		mode: 'modal',
-	});
+	headerMode: 'none',
+	mode: 'modal',
+});
 
 export const ElaporContainer = createAppContainer(ElaporScreen);
 
@@ -173,9 +179,9 @@ const GaleriScreen = createStackNavigator({
 		screen: GaleriDetail,
 	}
 }, {
-		headerMode: 'none',
-		mode: 'modal',
-	});
+	headerMode: 'none',
+	mode: 'modal',
+});
 
 export const GaleriContainer = createAppContainer(GaleriScreen);
 
@@ -188,20 +194,28 @@ const NewsScreen = createStackNavigator({
 		screen: NewsDetail
 	}
 }, {
-		headerMode: 'none',
-
-	});
+	headerMode: 'none',
+});
 
 export const NewsContainer = createAppContainer(NewsScreen);
 
 // Layanan
 const LayananScreen = createSwitchNavigator({
+	LayananPage: {
+		screen: LayananPage
+	},
 	LayananUser: {
 		screen: LayananUser,
 	},
 	LayananUpload: {
 		screen: LayananUpload
 	},
+	SignUpKtp: {
+		screen: SignUpKtp
+	},
+	SignUpPendudukNotFound: {
+		screen: SignUpPendudukNotFound
+	}
 }, {
 	headerMode: 'none',
 });
@@ -230,9 +244,6 @@ const HomeScreen = createStackNavigator({
 	},
 	TempatDetail: {
 		screen: TempatDetail,
-	},
-	LayananPage: {
-		screen: LayananPage
 	},
 	LayananContainer: {
 		screen: LayananContainer
@@ -280,15 +291,14 @@ const HomeScreen = createStackNavigator({
 		screen: TestUpload
 	},
 	Elapor: {
-
 		screen: ElaporContainer
 	},
 	TentangKami: {
 		screen: TentangKami
 	}
 }, {
-		headerMode: 'none',
-	});
+	headerMode: 'none',
+});
 
 export const HomeContainer = createAppContainer(HomeScreen);
 
@@ -370,21 +380,21 @@ const SignedInHome = createBottomTabNavigator({
 		}
 	},
 }, {
-		tabBarOptions: {
-			showIcon: true,
-			style: {
-				backgroundColor: '#ffffff',
-				borderTopWidth: 0.5,
-				borderColor: 'grey',
-			},
-			activeTintColor: '#ff4d4d',
-			inactiveTintColor: 'grey',
-			indicatorStyle: {
-				backgroundColor: '#ff4d4d',
-			},
-			//scrollEnabled: true,
-		}
-	});
+	tabBarOptions: {
+		showIcon: true,
+		style: {
+			backgroundColor: '#ffffff',
+			borderTopWidth: 0.5,
+			borderColor: 'grey',
+		},
+		activeTintColor: '#ff4d4d',
+		inactiveTintColor: 'grey',
+		indicatorStyle: {
+			backgroundColor: '#ff4d4d',
+		},
+		//scrollEnabled: true,
+	}
+});
 
 export const SignedInHomeContainer = createAppContainer(SignedInHome);
 

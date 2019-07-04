@@ -61,7 +61,7 @@ export default class TempatPariwisata extends React.Component{
     
     componentDidMount() {
 		this.mounted = true;
-		//this.getToken();
+		this.getToken();
     }
     
     componentWillUnmount() {

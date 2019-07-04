@@ -31,10 +31,22 @@ export default class Home extends React.Component {
             contentSize: 0,
             berita: [],
             isLoading: true,
+            latitude: null,
+            longitude: null,
         }
     }
 
     async getToken() {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                });
+            }, (error) => this.setState({ latitude: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+        
         try {
             const navigation = this.props.navigation;
 
@@ -63,6 +75,8 @@ export default class Home extends React.Component {
                             });
                         }
                     }
+
+                    console.log(this.state);
                 }).catch((error) => {
                     console.error(error);
                 });
@@ -257,7 +271,7 @@ export default class Home extends React.Component {
                                     alignItems: 'center',
                                     width: '100%',
                                     paddingTop: 5,
-                                    paddingBottom: 13,
+                                    paddingBottom: 15,
                                 }}
                             >
                                 <Text>
@@ -303,6 +317,47 @@ export default class Home extends React.Component {
                         flex: 1
                     }}
                 >
+                    <View
+                        style={{
+                            paddingHorizontal: 25,
+                            backgroundColor: 'rgb(52,73,100)',
+                            width: '100%',
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }}
+                    >
+                        <View
+                            style={{
+                                flex: 1,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: 17,
+                                    color: "white"
+                                }}
+                            >My Boget Apps</Text>
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Elapor')}
+                            style={{
+                                paddingHorizontal: 12,
+                                alignItems: 'center',
+                                paddingVertical: 11,
+                            }}
+                        >
+                            <Image
+                                source={require('../../assets/icons/lapor_white.png')}
+                                style={{
+                                    width: 24,
+                                    height: 21,
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                     <ScrollView
                         onScroll={this.onScroll.bind(this)}
                         scrollEventThrottle={16}
@@ -318,42 +373,6 @@ export default class Home extends React.Component {
                                 width: '100%',
                             }}
                         >
-                            <View
-                                style={{
-                                    paddingHorizontal: 25,
-                                    paddingVertical: 16,
-                                    backgroundColor: 'rgb(52,73,100)',
-                                    width: '100%',
-                                    flexDirection: "row",
-                                    alignItems: "center"
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontWeight: "bold",
-                                        fontSize: 17,
-                                        color: "white"
-                                    }}
-                                >My Boget Apps</Text>
-                                <View>
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate('Elapor')}
-                                        style={{
-                                            marginLeft: 170,
-                                            width: 40,
-                                        }}
-                                    >
-                                        <Image
-                                            source={require('../../assets/icons/lapor_white.png')}
-                                            style={{
-                                                width: 24,
-                                                height: 21,
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
                             <View style={{
                                 marginTop: 0,
                                 height: '100%',
@@ -376,7 +395,7 @@ export default class Home extends React.Component {
                                 flexWrap: 'wrap',
                                 justifyContent: 'center',
                                 paddingBottom: 20,
-                                marginTop: 50,
+                                marginTop: 30,
                             }}
                         >
                             { this._ShowMenuStatis() }
@@ -459,7 +478,7 @@ export default class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View
+                        {/*<View
                             style={{
                                 marginBottom: 50,
                                 backgroundColor: '#f2f2f2'
@@ -497,7 +516,7 @@ export default class Home extends React.Component {
                                     {this._ShowHomePariwisata()}
                                 </View>
                             </ScrollView>
-                        </View>
+                        </View>*/}
                     </ScrollView>
                 </View>
             </SafeAreaView >

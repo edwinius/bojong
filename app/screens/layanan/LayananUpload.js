@@ -3,6 +3,7 @@ import {
     ActionSheetIOS,
     Alert,
     AsyncStorage,
+    Button,
     Text,
     View,
     Platform,
@@ -13,7 +14,7 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 
 import LoadingScreen from '../common/LoadingScreen';
@@ -103,9 +104,23 @@ class LayananUploadApp extends React.Component {
 		}
     }
     
+    componentDidMount() {
+		this.getPermissionAsync();
+        this.getPermissionCamera();
+		this.mounted = true;
+		this.getToken();
+    }
+    
     componentWillUnmount() {
 		this.mounted = false;
     }
+
+    askPermissionsAsync = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        // you would probably do something to verify that permissions
+        // are actually granted, but I'm skipping that for brevity
+    };
 
     async getPermissionAsync() {
 		const { CAMERA_ROLL, Permissions } = Expo;
@@ -137,13 +152,6 @@ class LayananUploadApp extends React.Component {
 		} else {
 			throw new Error('Camera permission not granted');
 		}
-    }
-    
-    componentDidMount() {
-		this.getPermissionAsync();
-        this.getPermissionCamera();
-		this.mounted = true;
-		this.getToken();
     }
 
     _SubmitLayanan_V1 = () => {
@@ -776,12 +784,23 @@ class LayananUploadApp extends React.Component {
 				imageType: type
 			});*/}
 		}
-	}
+    }
+    
+    useCameraHandler = async () => {
+        await this.askPermissionsAsync();
+        let result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [4, 3],
+          base64: false,
+        });
+        this.setState({ result });
+    };
 	
 	_PickCamera = async(file) => {
+        await this.askPermissionsAsync();
 		let result = await ImagePicker.launchCameraAsync({
 			allowsEditing: true,
-			aspect: [4, 4]
+            base64: false,
 		});
 		console.log(result);
 		
@@ -901,6 +920,9 @@ class LayananUploadApp extends React.Component {
         }
         
         const navigation = this.props.navigation;
+        let layananType = navigation.state.params.layananType;
+        let layananName = navigation.state.params.layananName;
+        let userPid = this.state.userPid;
 
         return (
             <SafeAreaView
@@ -922,13 +944,69 @@ class LayananUploadApp extends React.Component {
                         backgroundColor: 'white'
                     }}
                 >
-                    <BackBtn
-                        title="Perekaman e-KTP"
-                        navigation={navigation}
-                        back={true}
-                    />
+                    <View
+                        style={{
+                            backgroundColor: 'rgb(52,73,100)',
+                            paddingVertical: 14,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('LayananUser', {
+                                    layananType: layananType,
+                                    userPid: userPid,
+                                    layananName: layananName
+                                });
+                            }}
+                            style={{
+                                flex: 0.2
+                            }}
+                        >
+                            <View
+                                style={{
+                                    paddingHorizontal: 12,
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 30,
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {"<"}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <View
+                            style={{
+                                flex: 1,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    textAlign: 'center',
+                                    fontSize: 21
+                                }}
+                            >
+                                { layananName }
+                            </Text>
+                        </View>
+
+                        <View
+                            style={{
+                                flex: 0.2
+                            }}
+                        ></View>
+                    </View>
 
                     <ScrollView>
+                        {/*<Button title="launchCameraAsync" onPress={this.useCameraHandler} />*/}
+
                         <View
                             style={{
                                 paddingHorizontal: 20,

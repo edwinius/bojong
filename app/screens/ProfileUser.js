@@ -98,38 +98,16 @@ export default class ProfileUser extends React.Component {
                         </View>
 
                         {this.state.userAdmin == '1' ?
-                            <View>
-                                <TouchableOpacity
-                                    style={{
-                                        backgroundColor: 'green',
-                                        alignItems: 'center',
-                                        marginHorizontal: 10,
-                                        paddingVertical: 10,
-                                    }}
-                                    onPress={() => navigation.navigate('Admin')}
-                                >
-                                    <Text
-                                        style={{
-                                            color: 'white',
-                                            fontSize: 16,
-                                            fontWeight: 'bold'
-                                        }}
-                                    >
-                                        Admin
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            : null}
-
-                        <View>
                             <TouchableOpacity
                                 style={{
                                     backgroundColor: 'green',
                                     alignItems: 'center',
                                     marginHorizontal: 10,
                                     paddingVertical: 10,
+                                    borderTopLeftRadius: 10,
+                                    borderTopRightRadius: 10,
                                 }}
-                                onPress={() => navigation.navigate('Setting')}
+                                onPress={() => navigation.navigate('Admin')}
                             >
                                 <Text
                                     style={{
@@ -138,10 +116,33 @@ export default class ProfileUser extends React.Component {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    Setting
+                                    Admin
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        : null}
+
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: 'green',
+                                alignItems: 'center',
+                                marginHorizontal: 10,
+                                paddingVertical: 10,
+                                marginTop: 6,
+                                borderBottomLeftRadius: 10,
+                                borderBottomRightRadius: 10
+                            }}
+                            onPress={() => navigation.navigate('Setting')}
+                        >
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: 16,
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                Settings
+                            </Text>
+                        </TouchableOpacity>
 
                         <View>
                             <TouchableOpacity

@@ -23,6 +23,7 @@ export default class TempatIbadah extends React.Component{
         super(props);
         
         this.state = {
+            isLoading: true,
             data: []
         }
     }
@@ -49,7 +50,8 @@ export default class TempatIbadah extends React.Component{
                 
                 if(this.mounted) {
                     this.setState({
-                        data: responseJson['data']
+                        data: responseJson['data'],
+                        isLoading: false
                     });
                 }
 			}).catch((error) => {

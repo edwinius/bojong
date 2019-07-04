@@ -131,7 +131,7 @@ export default class AdminLayanan extends React.Component {
                                 }}
                             >
                                 <Text>
-                                    { v.penduduk_first_name.toUpperCase() }
+                                    { v.penduduk_first_name != null ? v.penduduk_first_name.toUpperCase() : null }
                                 </Text>
                             </View>
                         </View>

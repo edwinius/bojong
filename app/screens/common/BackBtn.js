@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-    View,
+    StatusBar,
     Text,
     TouchableOpacity,
+    View,
 } from 'react-native';
 
 export default class BackBtn extends React.Component {
@@ -18,9 +19,17 @@ export default class BackBtn extends React.Component {
                     alignItems: 'center',
                 }}
             >
+                <StatusBar barStyle="light-content" />
+
                 { (this.props.back) ?
                     <TouchableOpacity
-                        onPress={() => navigation.goBack()}
+                        onPress={() => {
+                            if(this.props.screen_from && this.props.screen_from != '') {
+                                navigation.navigate(`${this.props.screen_from}`);
+                            } else {
+                                navigation.goBack(null);
+                            }
+                        }}
                         style={{
                             flex: 0.2
                         }}

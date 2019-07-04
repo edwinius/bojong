@@ -25,6 +25,7 @@ export default class LayananUser extends React.Component {
             data: [],
             userPid: null,
             userToken: null,
+            pendudukPid: null,
             layananType: '0'
         }
     }
@@ -35,6 +36,7 @@ export default class LayananUser extends React.Component {
             let layananType = navigation.state.params.layananType;
             let userPid = await AsyncStorage.getItem('userPid');
             let userToken = await AsyncStorage.getItem('userToken');
+            let pendudukPid = await AsyncStorage.getItem('pendudukPid');
 
 			// Fetch home data
 			fetch(`${global.api}fetch_data`,
@@ -63,6 +65,7 @@ export default class LayananUser extends React.Component {
 							isLoading: false,
                             userPid: userPid,
                             userToken: userToken,
+                            pendudukPid: pendudukPid,
                             layananType: layananType,
                             data: responseJson['data']
 						});
@@ -88,6 +91,7 @@ export default class LayananUser extends React.Component {
 
     _ShowUserLayanan() {
         const navigation = this.props.navigation;
+        let layananName = navigation.state.params.layananName;
 
         if(this.state.data.length > 0) {
             let applications = this.state.data.map(function(v, i) {
@@ -104,7 +108,8 @@ export default class LayananUser extends React.Component {
                         onPress={() => navigation.navigate('LayananUpload',
                         {
                             layananType: `${v.layanan_type}`,
-                            layananPid: `${v.layanan_pid}`
+                            layananPid: `${v.layanan_pid}`,
+                            layananName: layananName
                         })}
                     >
                         <View
@@ -224,6 +229,7 @@ export default class LayananUser extends React.Component {
                     <BackBtn
                         title={layananName}
                         navigation={navigation}
+                        screen_from='LayananPage'
                         back={true}
                     />
 

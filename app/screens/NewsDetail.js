@@ -11,9 +11,13 @@ import {
     Dimensions,
     TextInput
 } from 'react-native';
+import Carousel from 'react-native-banner-carousel';
 
 import HeaderBerita from './common/HeaderBerita';
 import LoadingScreen from './common/LoadingScreen';
+
+const dimensions = Dimensions.get('window');
+const dWidth = dimensions.width;
 
 export default class NewsDetail extends React.Component {
 
@@ -23,6 +27,7 @@ export default class NewsDetail extends React.Component {
         this.state = {
             isLoading: true,
             data: [],
+            foto: [],
             lapor: '',
         }
     }
@@ -63,7 +68,8 @@ export default class NewsDetail extends React.Component {
 					if(this.mounted) {
 						this.setState({
 							isLoading: false,
-                            data: responseJson['data']['berita']
+                            data: responseJson['data']['berita'],
+                            foto: responseJson['data']['foto']
 						});
 					}
 				}
@@ -79,6 +85,31 @@ export default class NewsDetail extends React.Component {
     componentDidMount() {
 		this.mounted = true;
 		this.getToken();
+    }
+
+    _ShowCarousel() {
+        if(this.state.foto.length > 0) {
+            const contentBanner = this.state.foto.map(function (item, index) {
+                return (
+                    <View
+                        key={ index }
+                    >
+                        <Image
+                            style={{ 
+                                width: dWidth, 
+                                height: 200
+                            }}
+                            source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
+                            resizeMode='contain'
+                        />
+                    </View>
+                );
+            });
+
+            return(contentBanner);
+        } else {
+            return(<Text>NoData</Text>);
+        }
     }
 
     render() {
@@ -152,7 +183,8 @@ export default class NewsDetail extends React.Component {
                                 style={{
                                     fontSize: 12
                                 }}
-                            >Boombastis.com</Text>
+                            >Bojonggenteng, Sukabumi</Text>
+
                             <Text
                                 style={{
                                     marginLeft: 6,
@@ -195,14 +227,24 @@ export default class NewsDetail extends React.Component {
                             marginVertical: 10
                         }}
                     >
-                        <Image
+                        <Carousel
+                            autoplay
+                            autoplayTimeout={4000}
+                            loop
+                            index={0}
+                            pageSize={dWidth}
+                        >
+                            { this._ShowCarousel() }
+                        </Carousel>
+
+                        {/*<Image
                             style={{
                                 width: '100%',
                                 height: 190
                             }}
                             source={{ uri: `${global.s3}berita/${berita.berita_pid}/${berita.berita_img}`}}
                             //source={require('../../assets/kolom_berita/berita_ojol.jpeg')} 
-                        />
+                        />*/}
                     </View>
 
                     <View
@@ -215,11 +257,12 @@ export default class NewsDetail extends React.Component {
                     >
                         <Text
                             style={{
-                                fontSize: 17,
-                                lineHeight: 24
+                                fontSize: 16,
+                                lineHeight: 24,
+                                color: '#333333'
                             }}
                         >
-                            { berita.berita_text }
+                            { "        " + berita.berita_text }
                         </Text>
                     </View>
 

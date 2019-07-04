@@ -23,6 +23,7 @@ export default class LayananPage extends React.Component {
             isLoading: true,
             userPid: null,
             userToken: null,
+            pendudukPid: null,
         }
     }
 
@@ -31,6 +32,8 @@ export default class LayananPage extends React.Component {
 			const navigation = this.props.navigation;
 			let userPid = await AsyncStorage.getItem('userPid');
             let userToken = await AsyncStorage.getItem('userToken');
+            let pendudukPid = await AsyncStorage.getItem('pendudukPid');
+            let userPenduduk = await AsyncStorage.getItem('userPenduduk');
 
             // If not logged set userPid & userToken to 0
 			if(userPid == null || userPid == '' || userToken == null || userToken == '') {
@@ -40,8 +43,10 @@ export default class LayananPage extends React.Component {
             
             this.setState({
                 userPid: userPid,
-                userToken: userToken
-            })
+                userToken: userToken,
+                pendudukPid: pendudukPid,
+                userPenduduk: userPenduduk
+            });
         } catch(error) {
 			console.log(error);
 		}
@@ -58,70 +63,58 @@ export default class LayananPage extends React.Component {
 
     _ShowButtons() {
         const navigation = this.props.navigation;
-        let { userPid } = this.state;
+        let { userPid, pendudukPid, userPenduduk } = this.state;
 
         const buttons = [
             {
                 btnName: 'Perekaman e-KTP',
                 btnPage: 'KtpPage',
                 layananType: '1'
-            },
-            {
+            },{
                 btnName: 'Pembuatan KK',
                 btnPage: 'KK',
                 layananType: '2'
-            },
-            {
+            },{
                 btnName: 'Penerbitan Surat Pindah',
                 btnPage: 'PageSuratPindah',
                 layananType: '3'
-            },
-            {
+            },{
                 btnName: 'Pembuatan IMB dibawah 200m2',
                 btnPage: 'ImbDibawah200m',
                 layananType: '4'
-            },
-            {
+            },{
                 btnName: 'Pembuatan IMB diatas 200m2',
                 btnPage: 'ImbDiatas200m',
                 layananType: '5'
-            },
-            {
+            },{
                 btnName: 'Surat Keterangan Jampersal',
                 btnPage: 'Jampersal',
                 layananType: '7'
-            },
-            {
+            },{
                 btnName: 'Pembuatan SIUP/TDP',
                 btnPage: 'SIUPdanTDP',
                 layananType: '8'
-            },
-            {
+            },{
                 btnName: 'VISUM',
                 btnPage: 'VISUM',
                 layananType: '9'
-            },
-            {
+            },{
                 btnName: 'PPATS',
                 btnPage: 'PPATS',
                 layananType: '6'
-            },
-            {
+            },{
                 btnName: 'Surat Keterangan Ahli Waris',
                 btnPage: 'PageAhliWaris',
                 layananType: '10'
-            },
-            {
+            },{
                 btnName: 'Surat Keterangan Pinjam ke Bank',
                 btnPage: 'PagePinjamBank',
                 layananType: '11'
-            },
-            {
+            },{
                 btnName: 'Izin Reklame Tanpa Sponsor',
                 btnPage: 'IzinReklame',
                 layananType: '12'
-            },
-            {
+            },{
                 btnName: 'Rekomendasi Izin Rame-Rame',
                 btnPage: 'IzinRame',
                 layananType: '13'
@@ -139,11 +132,15 @@ export default class LayananPage extends React.Component {
                     }}
                     onPress={() => {
                         if(userPid > 0) {
-                            navigation.navigate('LayananContainer', {
-                                layananType: `${item.layananType}`,
-                                userPid: userPid,
-                                layananName: `${item.btnName}`
-                            });
+                            if(userPenduduk == '1' || userPenduduk == '2') {
+                                navigation.navigate('LayananUser', {
+                                    layananType: `${item.layananType}`,
+                                    userPid: userPid,
+                                    layananName: `${item.btnName}`
+                                });
+                            } else {
+                                navigation.navigate('SignUpKtp');
+                            }
                         } else {
                             Alert.alert('Mohon Log In terlebih dahulu');
                         }

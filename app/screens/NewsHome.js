@@ -192,6 +192,23 @@ export default class NewsHome extends React.Component {
                                 source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
                                 resizeMode='contain'
                             />
+                            
+                            <View
+                                style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                    position: 'absolute',
+                                    zIndex: 2,
+                                    bottom: 0,
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    paddingTop: 5,
+                                    paddingBottom: 15,
+                                }}
+                            >
+                                <Text>
+                                    { item.berita_title }
+                                </Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 );
@@ -254,6 +271,7 @@ export default class NewsHome extends React.Component {
 
                         <View style={{
                             marginTop: 0,
+                            height: '100%',
                         }}>
                             <Carousel
                                 autoplay

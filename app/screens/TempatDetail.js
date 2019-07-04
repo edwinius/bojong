@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import openMap from 'react-native-open-maps';
 
 import LoadingScreen from './common/LoadingScreen';
 import BackBtn from './common/BackBtn';
@@ -111,7 +112,7 @@ export default class TempatDetail extends React.Component {
                         <View>
                             <Image
                                 source={ 
-                                    foto[0].tempat_img != null && foto[0].tempat_img != '' 
+                                    foto.length > 0 && foto[0].tempat_img != null && foto[0].tempat_img != '' 
                                 ? 
                                     {uri: `${global.s3}tempat/${foto[0].tempat_pid}/${foto[0].tempat_img}`} 
                                 : 
@@ -140,7 +141,7 @@ export default class TempatDetail extends React.Component {
                         <View
                             style={{
                                 paddingHorizontal: 10,
-                                
+                                paddingBottom: 10  
                             }}
                         >
                             <Text
@@ -153,6 +154,24 @@ export default class TempatDetail extends React.Component {
                             </Text>
                         </View>
 
+                        <TouchableOpacity
+                            onPress={() => openMap({ latitude: -6.8390618, longitude: 106.7160254, end: "Bojonggenteng", start: "", travelType: "drive" })}
+                            style={{
+                                paddingHorizontal: 15,
+                                paddingVertical: 8,
+                                borderBottomWidth: 1,
+                                borderColor: '#e0e0e0'
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: '#555555'
+                                }}
+                            >
+                                Buka lokasi di Peta
+                            </Text>
+                        </TouchableOpacity>
+
                         <View
                             style={{
                                 paddingHorizontal: 10,
@@ -162,9 +181,10 @@ export default class TempatDetail extends React.Component {
                             <Text
                                 style={{
                                     color: '#444444',
+                                    lineHeight: 25
                                 }}
                             >
-                                { this.state.tempat[0].tempat_desc }
+                                { "          " + this.state.tempat[0].tempat_desc }
                             </Text>
                         </View>
                     </ScrollView>

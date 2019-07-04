@@ -65,6 +65,12 @@ export default class SignIn extends React.Component {
                 if(responseJson['status'] == '200') {
                     const pid = responseJson['user_pid'];
                     let admin = responseJson['user_admin'];
+                    let penduduk_pid = responseJson['penduduk_pid'];
+                    let user_penduduk = responseJson['user_penduduk'];
+
+                    if(penduduk_pid == null) {
+                        penduduk_pid = '0';
+                    }
                     //const token = responseJson['token'];
                 
                     // Profile completed
@@ -72,6 +78,8 @@ export default class SignIn extends React.Component {
                     AsyncStorage.setItem('userPid', pid);
                     AsyncStorage.setItem('userAdmin', admin);
                     AsyncStorage.setItem('userToken', pid);
+                    AsyncStorage.setItem('pendudukPid', penduduk_pid);
+                    AsyncStorage.setItem('userPenduduk', user_penduduk);
                     navigation.navigate('User', { 'refresh': `${timeStamp}` });
 				} else {
 					Alert.alert(responseJson['msg']);

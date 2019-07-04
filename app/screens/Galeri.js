@@ -235,7 +235,7 @@ export default class Galeri extends React.Component {
                                     onChangeText={search => this.setState({ search })}
                                     placeholder="Cari Album..."
                                     style={{
-                                        width: 300,
+                                        flex: 1,
                                         padding: 6,
                                         borderRadius: 19,
                                         borderColor: "#333333",

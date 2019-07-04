@@ -135,7 +135,7 @@ export default class Elapor extends React.Component {
                     <BackBtn
                         title="Lapor"
                         navigation={navigation}
-                        back={false}
+                        back={true}
                     />
 
                     <ScrollView

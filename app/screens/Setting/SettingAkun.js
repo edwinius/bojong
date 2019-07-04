@@ -103,12 +103,14 @@ export default class SettingAkun extends React.Component {
                     }}
                 >
                 </SafeAreaView>
+                
                 <View>
                     <HeaderSetting
                         title='Akun Pribadi'
                         navigation={navigation}
                     />
                 </View>
+
                 <View
                     style={{
                         flex: 1

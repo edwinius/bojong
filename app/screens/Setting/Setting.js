@@ -10,6 +10,8 @@ import {
     TextInput,
 } from 'react-native';
 
+import BackBtn from '../common/BackBtn';
+
 export default class Setting extends React.Component {
 
     _SettingProfile() {
@@ -82,7 +84,13 @@ export default class Setting extends React.Component {
                 >
                 </SafeAreaView>
 
-                <View
+                <BackBtn
+                    title="Settings"
+                    navigation={navigation}
+                    back={true}
+                />
+
+                {/*<View
                     style={{
                         height: 65,
                         width: '100%',
@@ -121,7 +129,7 @@ export default class Setting extends React.Component {
                             flex: 0.65
                         }}
                     >Setting</Text>
-                </View>
+                </View>*/}
 
                 <ScrollView
                     style={{

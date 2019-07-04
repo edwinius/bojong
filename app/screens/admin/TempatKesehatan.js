@@ -23,6 +23,7 @@ export default class TempatKesehatan extends React.Component{
         super(props);
         
         this.state = {
+            isLoading: true,
             data: []
         }
     }
@@ -48,7 +49,8 @@ export default class TempatKesehatan extends React.Component{
                 console.log(responseJson);
                 
                 this.setState({
-                    data: responseJson['data']
+                    data: responseJson['data'],
+                    isLoading: false,
                 });
 			}).catch((error) => {
 				console.error(error);
