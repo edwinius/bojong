@@ -35,46 +35,46 @@ export default class Home extends React.Component {
     }
 
     async getToken() {
-		try {
+        try {
             const navigation = this.props.navigation;
 
-			// Fetch home data
-			fetch(`${global.api}fetch_data`,
-			{
-				method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					appToken: global.appToken,
-                    table: 'berita-app-home',
-                    data: ''
-				})
-			}).then((response) => response.json())
-			.then((responseJson) => {
-                console.log(responseJson);
-                
-                if(responseJson['status'] == '200') {
-					if(this.mounted) {
-						this.setState({
-							isLoading: false,
-                            berita: responseJson['data']['berita']
-						});
-					}
-				}
-			}).catch((error) => {
-				console.error(error);
-			});
-			
-		} catch(error) {
-			console.log(error);
-		}
+            // Fetch home data
+            fetch(`${global.api}fetch_data`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        appToken: global.appToken,
+                        table: 'berita-app-home',
+                        data: ''
+                    })
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+
+                    if (responseJson['status'] == '200') {
+                        if (this.mounted) {
+                            this.setState({
+                                isLoading: false,
+                                berita: responseJson['data']['berita']
+                            });
+                        }
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     componentDidMount() {
-		this.mounted = true;
-		this.getToken();
+        this.mounted = true;
+        this.getToken();
     }
 
     _ShowHomePariwisata() {
@@ -176,23 +176,23 @@ export default class Home extends React.Component {
             }
         ];
 
-        const contentMenuStatis = arrMenuStatis.map(function(statis, index) {
-            return(
+        const contentMenuStatis = arrMenuStatis.map(function (statis, index) {
+            return (
                 <TouchableOpacity
-                    key={ index }
-                    style={ styles.btnMenu }
+                    key={index}
+                    style={styles.btnMenu}
                     onPress={() => navigation.navigate(`${statis.menuScreen}`)}
                 >
-                    <View style={ styles.containerIconMenu }>
+                    <View style={styles.containerIconMenu}>
                         <Image
-                            style={ styles.iconMenu } 
-                            source={ statis.menuImg }
+                            style={styles.iconMenu}
+                            source={statis.menuImg}
                             resizeMode='contain'
                         />
                     </View>
-                    <View style={ styles.containerTxtMenu }>
-                        <Text style={ styles.txtMenu }>
-                            { statis.menuName }
+                    <View style={styles.containerTxtMenu}>
+                        <Text style={styles.txtMenu}>
+                            {statis.menuName}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -225,16 +225,16 @@ export default class Home extends React.Component {
 
     _ShowBerita() {
         let navigation = this.props.navigation;
-        
-        if(this.state.berita.length > 0) {
+
+        if (this.state.berita.length > 0) {
             const contentBanner = this.state.berita.map(function (item, index) {
                 return (
                     <TouchableOpacity
                         key={index}
-                        onPress={() => navigation.navigate('NewsDetail', 
-                        {
-                            beritaPid: item.berita_pid
-                        })}
+                        onPress={() => navigation.navigate('NewsDetail',
+                            {
+                                beritaPid: item.berita_pid
+                            })}
                     >
                         <View
                         >
@@ -244,8 +244,8 @@ export default class Home extends React.Component {
                                     width: dWidth,
                                     height: '100%',
                                 }}
-                                source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}`}}
-                                //source={item.berita_img}
+                                source={{ uri: `${global.s3}berita/${item.berita_pid}/${item.berita_img}` }}
+                            //source={item.berita_img}
                             />
 
                             <View
@@ -269,17 +269,17 @@ export default class Home extends React.Component {
                 );
             });
 
-            return(contentBanner);
+            return (contentBanner);
         } else {
-            return(
+            return (
                 <Text>NoData</Text>
             );
         }
     }
 
     render() {
-        if(this.state.isLoading) {
-			return( <LoadingScreen /> );
+        if (this.state.isLoading) {
+            return (<LoadingScreen />);
         }
 
         const navigation = this.props.navigation;
@@ -321,9 +321,11 @@ export default class Home extends React.Component {
                             <View
                                 style={{
                                     paddingHorizontal: 25,
-                                    paddingVertical: 10,
+                                    paddingVertical: 16,
                                     backgroundColor: 'rgb(52,73,100)',
-                                    width: '100%'
+                                    width: '100%',
+                                    flexDirection: "row",
+                                    alignItems: "center"
                                 }}
                             >
                                 <Text
@@ -332,7 +334,24 @@ export default class Home extends React.Component {
                                         fontSize: 17,
                                         color: "white"
                                     }}
-                                >Berita HOT!</Text>
+                                >My Boget Apps</Text>
+                                <View>
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate('Elapor')}
+                                        style={{
+                                            marginLeft: 170,
+                                            width: 40,
+                                        }}
+                                    >
+                                        <Image
+                                            source={require('../../assets/icons/lapor_white.png')}
+                                            style={{
+                                                width: 24,
+                                                height: 21,
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                             <View style={{
@@ -380,38 +399,43 @@ export default class Home extends React.Component {
                                 flex: 1,
                             }}
                         >
-                            <View
+                            {this._ShowMenuStatis()}
+                        </View>
+
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                marginTop: 15,
+                                marginBottom: 15,
+                            }}
+                        >
+                            <TouchableOpacity
                                 style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    paddingVertical: 6
+                                    alignItems: "center",
+                                    borderWidth: 0.1,
+                                    borderRadius: 9,
+                                    shadowColor: 'grey',
+                                    shadowOffset: { width: 1, height: 1 },
+                                    shadowRadius: 1,
+                                    shadowOpacity: 0.35,
+                                    elevation: 1,
+                                    padding: 15
                                 }}
+                                onPress={() => navigation.navigate('TentangKami')}
                             >
                                 <Image
-                                    source={require('../../assets/logo_bojong.png')}
                                     style={{
-                                        width: 50,
-                                        height: 50,
+                                        width: 80,
+                                        height: 80,
                                     }}
+                                    source={require('../../assets/icon_trans.png')}
                                 />
-                            </View>
-
-                            <View
-                                style={{
-                                    paddingTop: 4
-                                }}
-                            >
                                 <Text
                                     style={{
-                                        textAlign: 'center',
-                                        fontSize: 14,
-                                        color: '#444444'
+                                        fontSize: 12
                                     }}
-                                >Selamat datang di Aplikasi{'\n'} Kecamatan Bojonggenteng
-                                </Text>
-                            </View>
+                                >Tentang Kami</Text>
+                            </TouchableOpacity>
                         </View>
                         */}
 
@@ -476,7 +500,7 @@ export default class Home extends React.Component {
                         </View>
                     </ScrollView>
                 </View>
-            </SafeAreaView>
+            </SafeAreaView >
         );
     }
 }

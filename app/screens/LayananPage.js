@@ -206,7 +206,7 @@ export default class LayananPage extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
-        
+
         return (
             <SafeAreaView
                 style={{
@@ -220,7 +220,7 @@ export default class LayananPage extends React.Component {
                 }}
             >
                 <StatusBar barStyle="light-content" />
-                
+
                 <View
                     style={{
                         flex: 1,
@@ -247,8 +247,7 @@ export default class LayananPage extends React.Component {
                                     color: "#333333"
                                 }}
                             >
-                                Selamat datang dihalaman Layanan kami,silahkan pilih layanan yang anda butuhkan
-                                dibawah ini.{"\n"}{'\n'}Kecamatan Bojonggenteng akan memproses data yang anda upload di setiap layanan yang tersedia, mohon untuk mempersiapkan data yang dibutuhkan dan harap mengirim foto yang jelas agar kami dapat memproses kebutuhan anda dengan lebih cepat.
+                                Silahkan pilih layanan dibawah ini {'\n'}Mohon upload data-data yang diperlukan untuk masing-masing layanan.
                             </Text>
                         </View>
 
