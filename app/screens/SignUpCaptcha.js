@@ -19,7 +19,7 @@ export default class SignUpCaptcha extends React.Component {
         super(props);
         
         this.state = {
-            isLoading: true,
+            isLoading: false,
         }
     }
 

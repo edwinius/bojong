@@ -87,6 +87,10 @@ export default class NewsDetail extends React.Component {
 		this.getToken();
     }
 
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     _ShowCarousel() {
         if(this.state.foto.length > 0) {
             const contentBanner = this.state.foto.map(function (item, index) {

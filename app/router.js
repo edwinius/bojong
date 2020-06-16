@@ -452,8 +452,8 @@ const AdminScreen = createStackNavigator({
 		screen: DinamisPendidikan
 	}
 }, {
-		headerMode: 'none',
-	});
+	headerMode: 'none',
+});
 
 export const AdminContainer = createAppContainer(AdminScreen);
 

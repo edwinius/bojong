@@ -5,6 +5,7 @@ import {
     AsyncStorage,
     Button,
     Text,
+    TextInput,
     View,
     Platform,
     SafeAreaView,
@@ -49,13 +50,25 @@ class LayananUploadApp extends React.Component {
             userPid: '',
             userToken: '',
             layananType: '',
-            layananFiles: []
+            layananFiles: [],
+            btnSave: 0,
+            imbType: '',
+            imbLokasi: '',
+            imbLt1: null,
+            imbLt2: null,
+            imbTeras: null,
+            imbTanah: '',
+            imbSertifikat: '',
+            imbLetterC: '',
+            imbMilik: '',
+            imbDesa: ''
         }
     }
 
     async getToken() {
 		try {
             const navigation = this.props.navigation;
+            let layananType = navigation.state.params.layananType;
             let layananPid = navigation.state.params.layananPid;
 
 			let userPid = await AsyncStorage.getItem('userPid');
@@ -93,7 +106,21 @@ class LayananUploadApp extends React.Component {
                             userPid: userPid,
                             userToken: userToken,
                             layananFiles: responseJson['data']
-						});
+                        });
+                        
+                        if(layananType == '4') {
+                            this.setState({
+                                imbLokasi: responseJson['data'][0]['imb_lokasi'],
+                                imbLt1: responseJson['data'][0]['imb_lt1'],
+                                imbLt2: responseJson['data'][0]['imb_lt2'],
+                                imbTeras: responseJson['data'][0]['imb_teras'],
+                                imbTanah: responseJson['data'][0]['imb_tanah'],
+                                imbSertifikat: responseJson['data'][0]['imb_sertifikat'],
+                                imbLetterC: responseJson['data'][0]['imb_letterc'],
+                                imbMilik: responseJson['data'][0]['imb_milik'],
+                                imbDesa: responseJson['data'][0]['imb_desa']
+                            })
+                        }
 					}
 				}
 			}).catch((error) => {
@@ -152,6 +179,70 @@ class LayananUploadApp extends React.Component {
 		} else {
 			throw new Error('Camera permission not granted');
 		}
+    }
+
+    _SaveEdit = () => {
+        this.setState({
+            isLoading: true
+        });
+
+        const navigation = this.props.navigation;
+        let layananType = navigation.state.params.layananType;
+        let layananPid = navigation.state.params.layananPid;
+        let dataEdit;
+        let { imbType, imbLokasi, imbLt1, imbLt2, imbTeras, imbTanah, imbSertifikat, imbLetterC, imbMilik, imbDesa } = this.state;
+
+        switch(layananType) {
+            // IMB
+            case '4':
+                dataEdit = {
+                    data: {
+                        'layanan_pid': layananPid,
+                        'imb_type': imbType,
+                        'imb_lt1': imbLt1,
+                        'imb_lt2': imbLt2,
+                        'imb_teras': imbTeras,
+                        'imb_tanah': imbTanah,
+                        'imb_sertifikat': imbSertifikat,
+                        'imb_letterc': imbLetterC,
+                        'imb_milik': imbMilik,
+                        'imb_desa': imbDesa,
+                        'imb_lokasi': imbLokasi
+                    }
+                }
+                break;
+        }
+
+        fetch(`${global.api}update_data`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                appToken: global.appToken,
+                table: 'save_edit_layanan',
+                data: dataEdit
+            })
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+
+            if(responseJson['status'] == '200') {
+                if(this.mounted) {
+                    this.setState({
+                        isLoading: false,
+                        btnSave: '0'
+                    })
+                }
+            } else {
+                if(this.mounted) {
+                    this.setState({
+                        isLoading: false
+                    });
+                }
+            }
+        });
     }
 
     _SubmitLayanan_V1 = () => {
@@ -264,6 +355,169 @@ class LayananUploadApp extends React.Component {
                 }
             ]
         ); 
+    }
+
+    _ShowTopForm() {
+        const navigation = this.props.navigation;
+        let layananType = navigation.state.params.layananType;
+
+        switch(layananType) {
+            // IMB
+            case '4':
+                return(
+                    <View>
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Tipe Bangunan
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Alamat Lokasi
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbLokasi => this.setState({ imbLokasi, btnSave: 1 }) }
+                                    value={ this.state.imbLokasi }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Ukuran Lantai 1
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    keyboardType='numeric'
+                                    onChangeText={ imbLt1 => this.setState({ imbLt1, btnSave: 1 }) }
+                                    value={ this.state.imbLt1 }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Ukuran Lantai 2
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    keyboardType='numeric'
+                                    onChangeText={ imbLt2 => this.setState({ imbLt2, btnSave: 1 }) }
+                                    value={ this.state.imbLt2 }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Ukuran Teras
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    keyboardType='numeric'
+                                    onChangeText={ imbTeras => this.setState({ imbTeras, btnSave: 1 }) }
+                                    value={ this.state.imbTeras }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Letaknya diatas tanah
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbTanah => this.setState({ imbTanah, btnSave: 1 }) }
+                                    value={ this.state.imbTanah }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Nomor Sertifikat Tanah
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbSertifikat => this.setState({ imbSertifikat, btnSave: 1 }) }
+                                    value={ this.state.imbSertifikat }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Nomor Letter C / Kohir
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbLetterC => this.setState({ imbLetterC, btnSave: 1 }) }
+                                    value={ this.state.imbLetterC }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Kepunyaan Milik
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbMilik => this.setState({ imbMilik, btnSave: 1 }) }
+                                    value={ this.state.imbMilik }
+                                />
+                            </View>
+                        </View>
+
+                        <View style={ styles.formRow }>
+                            <View style={ styles.formLabel }>
+                                <Text>
+                                    Kelurahan / Desa
+                                </Text>
+                            </View>
+                            <View style={ styles.formInput }>
+                                <TextInput 
+                                    style={ styles.inputLayanan }
+                                    onChangeText={ imbDesa => this.setState({ imbDesa, btnSave: 1 }) }
+                                    value={ this.state.imbDesa }
+                                />
+                            </View>
+                        </View>
+                    </View>
+                );
+                break;
+        }
     }
 
     _KtpUpload() {
@@ -1027,7 +1281,11 @@ class LayananUploadApp extends React.Component {
                             }}
                         >
                             <View>
-                                {this._KtpUpload()}
+                                { this._ShowTopForm() }
+                            </View>
+
+                            <View>
+                                { this._KtpUpload() }
                             </View>
                         </View>
                     </ScrollView>
@@ -1038,24 +1296,54 @@ class LayananUploadApp extends React.Component {
                             paddingVertical: 5,
                         }}
                     >
-                        <TouchableOpacity
-                            onPress={this._SubmitLayanan}
-                            style={[{
-                                backgroundColor: 'green',
-                            }, styles.btnBottom]}
-                        >
-                            <Text
-                                style={{
-                                    color: 'white',
-                                    fontWeight: 'bold'
-                                }}
+                        { 
+                            this.state.btnSave == '1' 
+                        ?
+                            <TouchableOpacity
+                                onPress={this._SaveEdit}
+                                style={[{
+                                    backgroundColor: 'green',
+                                }, styles.btnBottom]}
                             >
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Simpan
+                                </Text>
+                            </TouchableOpacity>
+                        : null }
+
+                        { 
+                            this.state.btnSave == '0' 
+                        ?
+                            <TouchableOpacity
+                                onPress={this._SubmitLayanan}
+                                style={[{
+                                    backgroundColor: 'green',
+                                }, styles.btnBottom]}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'white',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Submit
+                                </Text>
+                            </TouchableOpacity>
+                        : null }
 
                         <TouchableOpacity
-                            onPress={() => navigation.goBack(null)}
+                            onPress={() => {
+                                navigation.navigate('LayananUser', {
+                                    layananType: layananType,
+                                    userPid: userPid,
+                                    layananName: layananName
+                                });
+                            }}
                             style={[{
                                 backgroundColor: 'white',
                             }, styles.btnBottom]}
@@ -1077,6 +1365,19 @@ class LayananUploadApp extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    // Form
+    formRow: {
+        paddingVertical: 5,
+    },
+    formLabel : {
+
+    },
+    inputLayanan: {
+        borderBottomColor: '#cacaca',
+        borderBottomWidth: 1,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
     btnBottom: {
         flex: 1,
         borderRadius: 50,

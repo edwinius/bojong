@@ -91,6 +91,10 @@ export default class Home extends React.Component {
         this.getToken();
     }
 
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     _ShowHomePariwisata() {
         const navigation = this.props.navigation;
 

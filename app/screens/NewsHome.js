@@ -73,6 +73,10 @@ export default class NewsHome extends React.Component {
 		this.getToken();
     }
 
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     _BeritaBojong() {
         const navigation = this.props.navigation;
 
@@ -266,7 +270,7 @@ export default class NewsHome extends React.Component {
                                     fontSize: 17,
                                     color: 'white'
                                 }}
-                            >Berita HOT</Text>
+                            >Berita Terbaru</Text>
                         </View>
 
                         <View style={{

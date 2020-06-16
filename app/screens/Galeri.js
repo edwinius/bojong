@@ -14,6 +14,8 @@ import {
     Dimensions,
 } from 'react-native';
 
+import Carousel from 'react-native-banner-carousel';
+
 import LoadingScreen from './common/LoadingScreen';
 
 import BackBtn from './common/BackBtn';
@@ -77,6 +79,60 @@ export default class Galeri extends React.Component {
     componentDidMount() {
         this.mounted = true;
         this.getToken();
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
+    _ShowCarousel() {
+        let navigation = this.props.navigation;
+        
+        if(this.state.galeriRow.length > 0) {
+            const contentBanner = this.state.galeriRow.map(function (item, index) {
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => navigation.navigate('GaleriDetail', 
+                        {
+                            pid: item.galeri_album_pid
+                        })}
+                    >
+                        <View>
+                            <Image
+                                style={{ 
+                                    width: dWidth, 
+                                    height: '100%' 
+                                }}
+                                source={{ uri: `${global.s3}galeri/${item.galeri_album_pid}/${item.galeri_img}`}}
+                                resizeMode='contain'
+                            />
+                            
+                            <View
+                                style={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                    position: 'absolute',
+                                    zIndex: 2,
+                                    bottom: 0,
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    paddingTop: 5,
+                                    paddingBottom: 15,
+                                }}
+                            >
+                                <Text>
+                                    { item.galeri_album_name }
+                                </Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                );
+            });
+
+            return(contentBanner);
+        } else {
+            return(<Text>NoData</Text>);
+        }
     }
 
     _HorizontalScroll() {
@@ -257,7 +313,8 @@ export default class Galeri extends React.Component {
                                     }}
                                 >Album Terbaru Bulan Ini:</Text>
                             </View>
-                            <ScrollView
+                            
+                            {/*<ScrollView
                                 style={{
                                     height: 160,
 
@@ -265,14 +322,35 @@ export default class Galeri extends React.Component {
                                 horizontal={true}
                             >
                                 {this._HorizontalScroll()}
+                            </ScrollView>*/}
 
-                            </ScrollView>
+                            <View
+                                style={{
+                                    flexDirection: 'column',
+                                    height: 230
+                                }}
+                            >
+                                <View style={{
+                                    marginTop: 0,
+                                    height: '100%',
+                                }}>
+                                    <Carousel
+                                        autoplay
+                                        autoplayTimeout={4000}
+                                        loop
+                                        index={0}
+                                        pageSize={dWidth}
+                                    >
+                                        {this._ShowCarousel()}
+                                    </Carousel>
+                                </View>
+                            </View>
 
                             <View
                                 style={{
                                     paddingLeft: 10,
                                     marginBottom: 14,
-                                    marginTop: 5
+                                    marginTop: 15
                                 }}
                             >
                                 <Text
@@ -284,7 +362,8 @@ export default class Galeri extends React.Component {
 
                             <View
                                 style={{
-                                    flexDirection: "row"
+                                    flexDirection: "row",
+                                    flexWrap: "wrap"
                                 }}
                             >
                                 {this._VerticalScroll()}
